@@ -4,11 +4,22 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<AnchorPane>
-    <GridPane alignment="CENTER">
-        <DatePicker GridPane.columnIndex="0" GridPane.rowIndex="0" ></DatePicker>
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="no.ciber.calendar.EventController">
+    <GridPane alignment="CENTER" styleClass="grid">
+        <AnchorPane.topAnchor>0</AnchorPane.topAnchor>
+        <AnchorPane.leftAnchor>0</AnchorPane.leftAnchor>
+        <AnchorPane.bottomAnchor>0</AnchorPane.bottomAnchor>
+        <AnchorPane.rightAnchor>0</AnchorPane.rightAnchor>
+        <padding>
+            <Insets top="10" left="10" bottom="10" right="10" />
+        </padding>
+        <DatePicker GridPane.columnIndex="0" GridPane.rowIndex="0"></DatePicker>
         <Button GridPane.columnIndex="1" GridPane.rowIndex="0" text="Oppdater"></Button>
         <DatePicker GridPane.columnIndex="2" GridPane.rowIndex="0"></DatePicker>
-        <ListView GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.columnSpan="3"></ListView>
+        <ListView fx:id="eventListView"
+                GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.columnSpan="3">
+
+        </ListView>
     </GridPane>
 </AnchorPane>

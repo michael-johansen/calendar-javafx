@@ -3,23 +3,17 @@ package no.ciber.calendar
 import javafx.application.Application
 import javafx.stage.Stage
 import javafx.scene.Scene
-import javafx.scene.control.Button
-import com.mashape.unirest.http.Unirest
-import javafx.scene.layout.GridPane
-import javafx.scene.text.Text
 import javafx.scene.control.Label
-import javafx.geometry.Pos
-import javafx.fxml.Initializable
 import javafx.scene.layout.AnchorPane
 import javafx.fxml.JavaFXBuilderFactory
 import javafx.fxml.FXMLLoader
-import javafx.scene.Node
 
 class CalendarApplication : Application() {
     override fun start(primaryStage: Stage) {
         val scene = Scene(Label("Loading"))
         primaryStage.setScene(scene)
         replaceSceneContent("my-events.fxml", scene)
+        scene.getStylesheets().add(javaClass<CalendarApplication>().getResource("calendar.css").toExternalForm());
         primaryStage.show()
     }
 
