@@ -7,24 +7,34 @@
 <?import javafx.collections.ObservableList?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="no.ciber.calendar.EventListController">
-        <GridPane alignment="CENTER" styleClass="grid">
+    <VBox>
         <AnchorPane.topAnchor>0</AnchorPane.topAnchor>
         <AnchorPane.leftAnchor>0</AnchorPane.leftAnchor>
         <AnchorPane.bottomAnchor>0</AnchorPane.bottomAnchor>
         <AnchorPane.rightAnchor>0</AnchorPane.rightAnchor>
         <padding>
-            <Insets top="10" left="10" bottom="10" right="10" />
+            <Insets top="10" left="10" bottom="10" right="10"/>
         </padding>
-        <DatePicker GridPane.columnIndex="0" GridPane.rowIndex="0"></DatePicker>
-        <Button GridPane.columnIndex="1" GridPane.rowIndex="0" text="Oppdater" onAction="#handleUpdateClicked"></Button>
-        <DatePicker GridPane.columnIndex="2" GridPane.rowIndex="0"></DatePicker>
-        <ListView fx:id="eventListView"
-                GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.columnSpan="3" onMouseClicked="#handleEventSelected" >
 
+        <HBox>
+            <DatePicker GridPane.columnIndex="0" GridPane.rowIndex="0"></DatePicker>
+            <Button GridPane.columnIndex="1" GridPane.rowIndex="0" text="Oppdater"
+                    onAction="#handleUpdateClicked"></Button>
+            <DatePicker GridPane.columnIndex="2" GridPane.rowIndex="0"></DatePicker>
+
+        </HBox>
+
+        <ListView fx:id="eventListView"
+                  GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.columnSpan="3"
+                  onMouseClicked="#handleEventSelected">
         </ListView>
-    </GridPane>
+        <HBox>
+            <CheckBox fx:id="taskRunningIndicator" text="tasks are running?" disable="true"></CheckBox>
+        </HBox>
+    </VBox>
+
 
     <stylesheets>
-        <URL value="@calendar.css" />
+        <URL value="@calendar.css"/>
     </stylesheets>
 </AnchorPane>

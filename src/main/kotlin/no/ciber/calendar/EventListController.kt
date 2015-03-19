@@ -10,73 +10,44 @@ import com.mashape.unirest.http.Unirest
 import com.mashape.unirest.http.async.Callback
 import com.mashape.unirest.http.exceptions.UnirestException
 import javafx.application.Platform
+import javafx.beans.binding.Bindings
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
+import javafx.concurrent.Service
+import javafx.concurrent.Task
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
+import javafx.scene.control.Cell
+import javafx.scene.control.CheckBox
 import javafx.scene.control.ListView
 import javafx.scene.input.MouseEvent
+import java.awt
 import java.net.URL
 import java.util.ResourceBundle
 
 class EventListController : Initializable {
     [FXML]
-    private var eventListView: ListView<String> = ListView()
-    private var eventList: ObservableList<String> = FXCollections.observableArrayList()
+    private var eventListView: ListView<Event> = ListView()
+    [FXML]
+    private var taskRunningIndicator: CheckBox = CheckBox()
+
+    var getEventsService: Service<ObservableList<Event>> = GetEventsService()
 
     override fun initialize(location: URL?, resources: ResourceBundle?) {
-        eventListView.setItems(eventList)
+        eventListView.itemsProperty().bind(getEventsService.valueProperty())
+        eventListView.visibleProperty().bind(Bindings.not(getEventsService.runningProperty()))
+        taskRunningIndicator.selectedProperty().bind(getEventsService.runningProperty())
+
         handleUpdateClicked()
     }
 
     public fun handleUpdateClicked() {
-        eventList.clear()
-        eventList.add("Loading events...")
-        eventListView.setItems(eventList)
-
-        val getRequest = Unirest.get("https://event-service.herokuapp.com")
-        getRequest.asStringAsync (object : Callback<String> {
-            override fun completed(response: HttpResponse<String>) {
-                if (response.getStatus() != 200) return failed(UnirestException("Not OK!"))
-                val json = response.getBody()
-                val events = parseJson(json)
-                setEvents(events)
-            }
-
-            override fun failed(e: UnirestException?) {
-                setEvents(arrayListOf(createEvent("Could not fetch events...")))
-            }
-
-            override fun cancelled() {
-                setEvents(arrayListOf(createEvent("Could not fetch events...")))
-            }
-        })
-    }
-
-    public fun handleEventSelected(event : MouseEvent){
+        getEventsService.reset()
+        getEventsService.start()
 
     }
 
-
-    private fun createEvent(name: String) = Event(name = name)
-
-    private fun parseJson(json: String): kotlin.List<Event> {
-        val mapper = ObjectMapper()
-
-        val javaType: CollectionType = CollectionType.construct(javaClass<java.util.List<Any>>(), SimpleType.construct(javaClass<Event>()))
-        val readValue: java.util.List<Event> = mapper.readValue(json, javaType)
-        return readValue as kotlin.List<Event>
+    public fun handleEventSelected(event: MouseEvent) {
 
     }
-
-    private fun setEvents(events: List<Event>) {
-        Platform.runLater {
-            eventList.clear()
-            events.forEach {
-                if (it.description != null) eventList.add(it.description)
-            }
-        }
-    }
-
-
 }
