@@ -13,10 +13,8 @@ class CalendarApplication : Application() {
         val scene = Scene(Label("Loading"))
         primaryStage.setScene(scene)
         replaceSceneContent("my-events.fxml", scene)
-        scene.getStylesheets().add(javaClass<CalendarApplication>().getResource("calendar.css").toExternalForm());
         primaryStage.show()
     }
-
 
     private fun replaceSceneContent(fxml: String, scene : Scene) {
         val loader = FXMLLoader()
