@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.collections.ObservableList?>
+<?import javafx.scene.SubScene?>
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="no.ciber.calendar.EventDetailController">
+    <center>
+        <VBox>
+            <padding>
+                <Insets top="10" left="10" bottom="10" right="10"/>
+            </padding>
+
+            <HBox>
+                <Button text="Tilbake" onAction="#goBack"></Button>
+                <Button text="Meld meg på!" onAction="#signUp"></Button>
+            </HBox>
+
+            <Label>Event title</Label>
+            <TextArea>
+                <text>Event info</text>
+            </TextArea>
+            <Label>time</Label>
+        </VBox>
+
+    </center>
+
+    <stylesheets>
+        <URL value="@calendar.css"/>
+    </stylesheets>
+</BorderPane>

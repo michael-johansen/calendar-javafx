@@ -1,17 +1,19 @@
 package no.ciber.calendar
 
-import javafx.fxml.Initializable
-import java.net.URL
-import java.util.ResourceBundle
-import javafx.scene.control.Label
+import javafx.event
+import javafx.event.ActionEvent
 import javafx.fxml.FXML
+import javafx.scene.control.Label
 
-class EventDetailController:Initializable{
+class EventDetailController(application: CalendarApplication) : BaseController(application) {
     [FXML]
-    private val eventLabel  = Label();
+    private val eventLabel = Label();
 
-    override fun initialize(location: URL?, resources: ResourceBundle?) {
+    public fun signUp() {
 
     }
 
+    public fun goBack() {
+        gotoScene("event-list.fxml")
+    }
 }

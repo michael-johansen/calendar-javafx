@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.collections.ObservableList?>
+<GridPane xmlns:fx="http://javafx.com/fxml" styleClass="root"
+        fx:controller="no.ciber.calendar.EventListController">
+
+    <padding>
+        <Insets top="10" left="10" bottom="10" right="10"/>
+    </padding>
+
+    <DatePicker GridPane.columnIndex="0" GridPane.rowIndex="0"></DatePicker>
+    <Button GridPane.columnIndex="1" GridPane.rowIndex="0"
+            text="Oppdater" onAction="#handleUpdateClicked"></Button>
+    <DatePicker GridPane.columnIndex="2" GridPane.rowIndex="0"></DatePicker>
+
+    <ListView fx:id="eventListView"
+              GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.columnSpan="3"
+              onMouseClicked="#handleEventSelected"></ListView>
+
+    <CheckBox fx:id="taskRunningIndicator"
+              GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.columnSpan="3"
+              text="tasks are running?" disable="true"></CheckBox>
+    <Label fx:id="loadingLabel"
+           GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.columnSpan="2">
+        Please wait. We're fetching your events.
+    </Label>
+
+    <stylesheets>
+        <URL value="@calendar.css"/>
+    </stylesheets>
+</GridPane>
+
+
+
