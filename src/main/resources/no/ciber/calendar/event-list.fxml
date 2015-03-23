@@ -6,7 +6,7 @@
 <?import javafx.scene.text.*?>
 <?import javafx.collections.ObservableList?>
 <GridPane xmlns:fx="http://javafx.com/fxml" styleClass="root"
-        fx:controller="no.ciber.calendar.EventListController">
+          fx:controller="no.ciber.calendar.CalendarEventListController">
 
     <padding>
         <Insets top="10" left="10" bottom="10" right="10"/>

@@ -7,7 +7,7 @@ import javafx.beans.property.StringProperty
 import javafx.beans.value.ObservableValue
 
 [JsonIgnoreProperties(array("class", "textProperty"))]
-class Event(
+class CalendarEvent(
         val name: String? = "",
         val description: String? = "",
         val id: String? = "",

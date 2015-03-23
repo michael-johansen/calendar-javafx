@@ -9,31 +9,38 @@ import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.concurrent.Service
 import javafx.concurrent.Task
+import org.slf4j.LoggerFactory
 
 
-class GetEventsService : Service<ObservableList<Event>>() {
-    override fun createTask(): Task<ObservableList<Event>> {
-        return object:Task<ObservableList<Event>>(){
-            override fun call(): ObservableList<Event> {
+class FetchEventListService : Service<ObservableList<CalendarEvent>>() {
+    val logger = LoggerFactory.getLogger(javaClass)
+
+    override fun createTask(): Task<ObservableList<CalendarEvent>> {
+        logger.info("Creating new task")
+        return object:Task<ObservableList<CalendarEvent>>(){
+            override fun call(): ObservableList<CalendarEvent> {
+                logger.info("Fetching events")
                 val request = Unirest.get("https://event-service.herokuapp.com")
                 val response = request.asString()
                 if (response.getStatus() != 200) throw UnirestException("Not OK!")
                 val json = response.getBody()
                 val events = parseJson(json)
-                return FXCollections.observableArrayList(events)
+                val observableList = FXCollections.observableArrayList(events)
+                logger.info("Done fetching events")
+                return observableList
             }
         }
     }
 
-    private fun parseJson(json: String): kotlin.List<Event> {
+    private fun parseJson(json: String): kotlin.List<CalendarEvent> {
         val mapper = ObjectMapper()
 
         val javaType: CollectionType = CollectionType.construct(
                 javaClass<java.util.List<Any>>(),
-                SimpleType.construct(javaClass<Event>())
+                SimpleType.construct(javaClass<CalendarEvent>())
         )
-        val readValue: java.util.List<Event> = mapper.readValue(json, javaType)
-        return readValue as kotlin.List<Event>
+        val readValue: java.util.List<CalendarEvent> = mapper.readValue(json, javaType)
+        return readValue as kotlin.List<CalendarEvent>
 
     }
 

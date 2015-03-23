@@ -2,42 +2,46 @@ package no.ciber.calendar
 
 import javafx.application.Application
 import javafx.application.Platform
-import javafx.stage.Stage
+import javafx.event.Event
+import javafx.fxml.FXMLLoader
+import javafx.fxml.JavaFXBuilderFactory
+import javafx.scene.Group
+import javafx.scene.Parent
 import javafx.scene.Scene
 import javafx.scene.control.Label
-import javafx.scene.layout.AnchorPane
-import javafx.fxml.JavaFXBuilderFactory
-import javafx.fxml.FXMLLoader
-import javafx.scene.Group
-import javafx.scene.Node
-import javafx.scene.Parent
-import javafx.scene.paint.Paint
+import javafx.stage.Stage
+import org.slf4j.LoggerFactory
 import java.net.URL
-import java.util.function.Consumer
 
 class CalendarApplication : Application() {
-    val scene = Scene(Group(), 400.0, 400.0)
+    val logger = LoggerFactory.getLogger(javaClass)
+    val scene = Scene(Group(Label("loading")), 400.0, 400.0)
 
     override fun start(primaryStage: Stage) {
+        logger.info("Starting application")
         primaryStage.setScene(scene)
-        gotoView<EventListController>("event-list.fxml")
         primaryStage.show()
+        primaryStage.addEventHandler(
+                Event.ANY,
+                { event ->
+                    when (event) {
+                        is NavigateToCalendarEventDetails -> gotoView(event.location)
+                        is NavigateToCalendarEventList -> gotoView(event.location)
+                    }
+                })
+
+        Platform.runLater {
+            logger.info("Navigating to event list")
+            primaryStage.fireEvent(NavigateToCalendarEventList())
+        }
     }
 
-
-    fun <Controller : BaseController> gotoView(
-            fxml: String,
-            callback: (Controller) -> Unit = {it}) {
+    fun <Controller> gotoView(fxml: String): Controller {
         val loader = FXMLLoader()
-        loader.setControllerFactory {
-            val instance = it.getConstructor(javaClass<CalendarApplication>()).newInstance(this) as Controller
-            if(callback != null) callback(instance)
-            instance
-        }
         loader.setBuilderFactory(JavaFXBuilderFactory())
         loader.setLocation(getRequiredResource(fxml))
-
         scene.setRoot(loader.load<Parent>())
+        return loader.getController<Controller>()
     }
 
     private fun getRequiredResource(fxml: String): URL {
