@@ -19,17 +19,26 @@ class FetchEventListService : Service<ObservableList<CalendarEvent>>() {
         logger.info("Creating new task")
         return object:Task<ObservableList<CalendarEvent>>(){
             override fun call(): ObservableList<CalendarEvent> {
-                logger.info("Fetching events")
-                val request = Unirest.get("https://event-service.herokuapp.com")
-                val response = request.asString()
-                if (response.getStatus() != 200) throw UnirestException("Not OK!")
-                val json = response.getBody()
-                val events = parseJson(json)
-                val observableList = FXCollections.observableArrayList(events)
-                logger.info("Done fetching events")
-                return observableList
+                try{
+                    return getEvents()
+                }catch(e:Exception){
+                    logger.warn("Could not fetch events:", e)
+                    throw e
+                }
             }
         }
+    }
+
+    private fun getEvents(): ObservableList<CalendarEvent> {
+        logger.info("Fetching events")
+        val request = Unirest.get("https://event-service.herokuapp.com")
+        val response = request.asString()
+        if (response.getStatus() != 200) throw UnirestException("Not OK!")
+        val json = response.getBody()
+        val events = parseJson(json)
+        val observableList = FXCollections.observableArrayList(events)
+        logger.info("Done fetching events")
+        return observableList
     }
 
     private fun parseJson(json: String): kotlin.List<CalendarEvent> {

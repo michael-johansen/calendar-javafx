@@ -1,4 +1,5 @@
 .root{
+    -fx-background-image: url("background.jpg");
 }
 .vbox {
 }

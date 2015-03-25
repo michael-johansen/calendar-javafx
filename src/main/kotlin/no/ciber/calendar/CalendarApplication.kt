@@ -25,7 +25,7 @@ class CalendarApplication : Application() {
                 Event.ANY,
                 { event ->
                     when (event) {
-                        is NavigateToCalendarEventDetails -> gotoView(event.location)
+                        is NavigateToCalendarEventDetails -> gotoView(event.location, CalendarEventDetailController(event.calendarEvent))
                         is NavigateToCalendarEventList -> gotoView(event.location)
                     }
                 })
@@ -36,10 +36,11 @@ class CalendarApplication : Application() {
         }
     }
 
-    fun <Controller> gotoView(fxml: String): Controller {
+    fun <Controller> gotoView(fxml: String, controller: Any? = null): Controller {
         val loader = FXMLLoader()
         loader.setBuilderFactory(JavaFXBuilderFactory())
         loader.setLocation(getRequiredResource(fxml))
+        loader.setController(controller)
         scene.setRoot(loader.load<Parent>())
         return loader.getController<Controller>()
     }

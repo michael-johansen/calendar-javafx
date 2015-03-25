@@ -6,8 +6,7 @@
 <?import javafx.scene.text.*?>
 <?import javafx.collections.ObservableList?>
 <?import javafx.scene.SubScene?>
-<BorderPane xmlns:fx="http://javafx.com/fxml"
-            fx:controller="no.ciber.calendar.CalendarEventDetailController">
+<BorderPane xmlns:fx="http://javafx.com/fxml">
     <center>
         <VBox>
             <padding>
