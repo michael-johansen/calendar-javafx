@@ -6,7 +6,7 @@ class CalendarEventListCell : ListCell<CalendarEvent>(){
     override fun updateItem(item: CalendarEvent?, empty: Boolean) {
         super.updateItem(item, empty)
         if (item != null && !empty) {
-            textProperty().bind(item.textProperty())
+            textProperty().bind(item.nameProperty)
         }
     }
 }

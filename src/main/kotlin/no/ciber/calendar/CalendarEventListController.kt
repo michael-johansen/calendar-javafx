@@ -1,6 +1,8 @@
 package no.ciber.calendar
 
 import javafx.beans.binding.Bindings
+import javafx.beans.property.SimpleListProperty
+import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.concurrent.Service
 import javafx.concurrent.Worker
@@ -8,19 +10,19 @@ import javafx.event.Event
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
 import javafx.scene.control.CheckBox
+import javafx.scene.control.ChoiceBox
 import javafx.scene.control.Label
 import javafx.scene.control.ListView
 import javafx.scene.input.MouseEvent
 import java.net.URL
+import java.util.ArrayList
 import java.util.ResourceBundle
 
 class CalendarEventListController : Initializable {
-    [FXML]
-    private var eventListView: ListView<CalendarEvent>? = null
-    [FXML]
-    private var taskRunningIndicator: CheckBox? = null
-    [FXML]
-    private var loadingLabel: Label? = null
+    FXML var eventListView: ListView<CalendarEvent>? = null
+    FXML var taskRunningIndicator: CheckBox? = null
+    FXML var loadingLabel: Label? = null
+    FXML var searchMode: ChoiceBox<SearchMode>? = null
 
     val fetchEventListService = FetchEventListService()
 
@@ -30,6 +32,12 @@ class CalendarEventListController : Initializable {
         eventListView!!.setCellFactory { CalendarEventListCell() }
         taskRunningIndicator!!.selectedProperty().bind(fetchEventListService.runningProperty())
         loadingLabel!!.visibleProperty().bind(fetchEventListService.runningProperty())
+
+
+        val simpleListProperty = FXCollections.observableArrayList(SearchMode.values().toList())
+        searchMode!!.setItems(simpleListProperty)
+        searchMode!!.getSelectionModel().select(SearchMode.Upcoming)
+
 
         handleUpdateClicked()
     }
@@ -42,8 +50,15 @@ class CalendarEventListController : Initializable {
 
     public fun handleEventSelected(event: MouseEvent) {
         val selectedEvent = eventListView?.getSelectionModel()?.getSelectedItem()
-        if(selectedEvent!=null){
+        if (selectedEvent != null) {
             Event.fireEvent(event.getTarget(), NavigateToCalendarEventDetails(selectedEvent))
         }
     }
+}
+
+enum class SearchMode {
+    All
+    Today
+    Upcoming
+    Past
 }

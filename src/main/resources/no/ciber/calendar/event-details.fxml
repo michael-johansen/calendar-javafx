@@ -6,25 +6,32 @@
 <?import javafx.scene.text.*?>
 <?import javafx.collections.ObservableList?>
 <?import javafx.scene.SubScene?>
-<BorderPane xmlns:fx="http://javafx.com/fxml">
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="no.ciber.calendar.CalendarEventDetailController">
     <center>
         <VBox>
             <padding>
                 <Insets top="10" left="10" bottom="10" right="10"/>
             </padding>
 
-            <HBox>
-                <Button text="Tilbake" onAction="#goBack"></Button>
-                <Button text="Meld meg på!" onAction="#signUp"></Button>
-            </HBox>
-
-            <Label>Event title</Label>
-            <TextArea>
+            <Label fx:id="name">Event title</Label>
+            <TextArea fx:id="description">
                 <text>Event info</text>
             </TextArea>
-            <Label>time</Label>
-        </VBox>
 
+
+            <HBox >
+                <Label fx:id="startDate" >time</Label>
+                <Pane HBox.hgrow="ALWAYS" />
+                <Label fx:id="endDate">time</Label>
+            </HBox>
+
+            <Pane VBox.vgrow="ALWAYS"></Pane>
+
+            <ToolBar>
+                <Button text="Tilbake" onAction="#goBack"></Button>
+                <Button text="Meld meg på!" onAction="#signUp"></Button>
+            </ToolBar>
+        </VBox>
     </center>
 
     <stylesheets>

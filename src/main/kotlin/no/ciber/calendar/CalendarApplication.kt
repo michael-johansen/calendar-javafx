@@ -20,15 +20,8 @@ class CalendarApplication : Application() {
     override fun start(primaryStage: Stage) {
         logger.info("Starting application")
         primaryStage.setScene(scene)
+        primaryStage.addEventHandler(Event.ANY, applicationEventHandler())
         primaryStage.show()
-        primaryStage.addEventHandler(
-                Event.ANY,
-                { event ->
-                    when (event) {
-                        is NavigateToCalendarEventDetails -> gotoView(event.location, CalendarEventDetailController(event.calendarEvent))
-                        is NavigateToCalendarEventList -> gotoView(event.location)
-                    }
-                })
 
         Platform.runLater {
             logger.info("Navigating to event list")
@@ -36,19 +29,31 @@ class CalendarApplication : Application() {
         }
     }
 
-    fun <Controller> gotoView(fxml: String, controller: Any? = null): Controller {
+    fun gotoView(fxml: String, vararg arguments:Any) {
+        fun defaultControllerFactory(clazz: Class<*>): Any {
+            logger.info("Initializing controller $clazz with ${arguments.toList()}")
+            val arrayOfClasss = arguments.map { it.javaClass }.copyToArray()
+            return clazz.getConstructor(* arrayOfClasss).newInstance(* arguments)!!
+        }
+
         val loader = FXMLLoader()
         loader.setBuilderFactory(JavaFXBuilderFactory())
         loader.setLocation(getRequiredResource(fxml))
-        loader.setController(controller)
+        loader.setControllerFactory (::defaultControllerFactory)
         scene.setRoot(loader.load<Parent>())
-        return loader.getController<Controller>()
     }
 
     private fun getRequiredResource(fxml: String): URL {
-        val resourceURL = javaClass<CalendarApplication>().getResource(fxml)
-        if (resourceURL == null) throw NullPointerException("No resource found for [$fxml]")
-        return resourceURL
+        return javaClass<CalendarApplication>().getResource(fxml)!!
+    }
+
+    private fun applicationEventHandler(): (Event) -> Unit {
+        return { event ->
+            when (event) {
+                is NavigateToCalendarEventDetails -> gotoView(fxml = event.location, arguments = event.calendarEvent)
+                is NavigateToCalendarEventList -> gotoView(fxml = event.location)
+            }
+        }
     }
 }
 
