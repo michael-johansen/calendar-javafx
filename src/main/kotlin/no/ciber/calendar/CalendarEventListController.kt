@@ -48,6 +48,10 @@ class CalendarEventListController : Initializable {
         fetchEventListService.start()
     }
 
+    public fun handleCreateClicked() {
+
+    }
+
     public fun handleEventSelected(event: MouseEvent) {
         val selectedEvent = eventListView?.getSelectionModel()?.getSelectedItem()
         if (selectedEvent != null) {

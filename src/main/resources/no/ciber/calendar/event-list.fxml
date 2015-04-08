@@ -12,9 +12,11 @@
         <Insets top="10" left="10" bottom="10" right="10"/>
     </padding>
 
+
     <ToolBar>
         <ChoiceBox fx:id="searchMode"></ChoiceBox>
         <Button text="Oppdater" onAction="#handleUpdateClicked"></Button>
+        <Button text="Opprett" onAction="#handleCreateClicked"></Button>
     </ToolBar>
 
     <ListView fx:id="eventListView" onMouseClicked="#handleEventSelected"></ListView>
