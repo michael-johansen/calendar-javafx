@@ -13,16 +13,25 @@
                 <Insets top="10" left="10" bottom="10" right="10"/>
             </padding>
 
-            <Label fx:id="name">Event title</Label>
-            <TextArea fx:id="description">
-                <text>Event info</text>
+            <Label>Title</Label>
+            <TextField fx:id="name"></TextField>
+
+            <Label>Description</Label>
+            <TextArea fx:id="description" editable="true">
+                <text></text>
             </TextArea>
 
 
             <HBox >
-                <Label fx:id="startDate" >time</Label>
+                <DatePicker fx:id="startDate"></DatePicker>
                 <Pane HBox.hgrow="ALWAYS" />
-                <Label fx:id="endDate">time</Label>
+                <DatePicker fx:id="endDate"></DatePicker>
+            </HBox>
+
+            <HBox>
+                <ChoiceBox fx:id="startTime"></ChoiceBox>
+                <Pane HBox.hgrow="ALWAYS" />
+                <ChoiceBox fx:id="endTime"></ChoiceBox>
             </HBox>
 
             <Pane VBox.vgrow="ALWAYS"></Pane>
@@ -30,6 +39,8 @@
             <ToolBar>
                 <Button text="Tilbake" onAction="#goBack"></Button>
                 <Button text="Meld meg på!" onAction="#signUp"></Button>
+                <Pane HBox.hgrow="ALWAYS" />
+                <Button onAction="#save">Save</Button>
             </ToolBar>
         </VBox>
     </center>

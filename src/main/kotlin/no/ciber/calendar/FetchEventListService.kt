@@ -43,6 +43,7 @@ class FetchEventListService : Service<ObservableList<CalendarEvent>>() {
 
     private fun parseJson(json: String): kotlin.List<CalendarEvent> {
         val mapper = ObjectMapper()
+        mapper.findAndRegisterModules()
 
         val javaType: CollectionType = CollectionType.construct(
                 javaClass<java.util.List<Any>>(),
