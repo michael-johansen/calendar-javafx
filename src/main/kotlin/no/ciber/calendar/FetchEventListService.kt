@@ -31,7 +31,7 @@ class FetchEventListService : Service<ObservableList<CalendarEvent>>() {
 
     private fun getEvents(): ObservableList<CalendarEvent> {
         logger.info("Fetching events")
-        val request = Unirest.get("https://event-service.herokuapp.com")
+        val request = Unirest.get(Settings.eventServiceUrl)
         val response = request.asString()
         if (response.getStatus() != 200) throw UnirestException("Not OK!")
         val json = response.getBody()

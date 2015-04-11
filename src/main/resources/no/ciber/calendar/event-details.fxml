@@ -21,18 +21,17 @@
                 <text></text>
             </TextArea>
 
-
+            <Label>When is it?</Label>
             <HBox >
                 <DatePicker fx:id="startDate"></DatePicker>
+                <TextField fx:id="startTime"></TextField>
                 <Pane HBox.hgrow="ALWAYS" />
                 <DatePicker fx:id="endDate"></DatePicker>
+                <TextField fx:id="endTime"></TextField>
             </HBox>
 
-            <HBox>
-                <ChoiceBox fx:id="startTime"></ChoiceBox>
-                <Pane HBox.hgrow="ALWAYS" />
-                <ChoiceBox fx:id="endTime"></ChoiceBox>
-            </HBox>
+            <Label>Where is it?</Label>
+            <TextField fx:id="locationTextField"></TextField>
 
             <Pane VBox.vgrow="ALWAYS"></Pane>
 

@@ -1,19 +1,22 @@
 package no.ciber.calendar
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.ObjectWriter
+import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import javafx.beans.property.SimpleListProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.beans.value
 import javafx.beans.value.ObservableValue
 import javafx.collections.ObservableList
-import java.time.Instant
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.LocalTime
+import java.io.PrintWriter
+import java.io.StringWriter
+import java.time.*
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoField
 import java.time.temporal.TemporalAdjusters
@@ -21,7 +24,6 @@ import java.time.temporal.TemporalField
 import java.util.ArrayList
 
 JsonIgnoreProperties(array(
-        "class",
         "nameProperty",
         "descriptionProperty",
         "idProperty",
@@ -32,14 +34,16 @@ JsonIgnoreProperties(array(
         "endDateProperty",
         "startTimeProperty",
         "endTimeProperty",
+        "locationProperty",
         "usersProperty"
 ))
+JsonDeserialize()
 class CalendarEvent {
     val nameProperty = SimpleStringProperty()
     val descriptionProperty = SimpleStringProperty()
     val locationProperty = SimpleStringProperty()
     val idProperty = SimpleStringProperty()
-    val createdDateProperty = SimpleStringProperty()
+    val createdDateProperty = SimpleObjectProperty<LocalDateTime>()
     val startDateTimeProperty = SimpleObjectProperty<LocalDateTime>()
     val endDateTimeProperty = SimpleObjectProperty<LocalDateTime>()
     val startDateProperty = SimpleObjectProperty<LocalDate>()
@@ -62,27 +66,31 @@ class CalendarEvent {
         get() = idProperty.getValue()
         set(value) = idProperty.set(value)
     var createdDate: String?
-        get() = createdDateProperty.getValue()
-        set(value) = createdDateProperty.set(value)
+        get() = createdDateProperty.getValue().atOffset(ZoneOffset.ofHours(0)).format(Settings.eventDateFormat())
+        set(value) = createdDateProperty.setValue(LocalDateTime.parse(value, Settings.eventDateFormat()))
     var startDate: String?
-        get() = startDateTimeProperty.getValue().format(DateTimeFormatter.ISO_DATE_TIME)
+        get() = startDateTimeProperty.getValue().atOffset(ZoneOffset.ofHours(0)).format(Settings.eventDateFormat())
         set(value) {
-            startDateTimeProperty.setValue(LocalDateTime.parse(value, DateTimeFormatter.ISO_DATE_TIME))
+            startDateTimeProperty.setValue(LocalDateTime.parse(value, Settings.eventDateFormat()))
             startDateProperty.setValue(startDateTimeProperty.get().toLocalDate())
             startTimeProperty.setValue(startDateTimeProperty.get().toLocalTime())
         }
     var endDate: String?
-        get() = endDateTimeProperty.getValue().format(DateTimeFormatter.ISO_DATE_TIME)
+        get() = endDateTimeProperty.getValue().atOffset(ZoneOffset.ofHours(0)).format(Settings.eventDateFormat())
         set(value) {
-            endDateTimeProperty.setValue(LocalDateTime.parse(value, DateTimeFormatter.ISO_DATE_TIME))
+            endDateTimeProperty.setValue(LocalDateTime.parse(value, Settings.eventDateFormat()))
             endDateProperty.setValue(endDateTimeProperty.get().toLocalDate())
             endTimeProperty.setValue(endDateTimeProperty.get().toLocalTime())
         }
     val users: List<String>
-        get() = usersProperty.toList()
+         get() = usersProperty.toList()
+
+    JsonProperty(value="class")
+    public fun getClazz():String = "no.ciber.service.Event"
+    public fun setClazz(clazz:String){}
 
     constructor(){
-        // Update DateTime when date or time changes
+        /** Update DateTime when date or time changes */
         startDateProperty.addListener({(observable, oldValue, newValue)-> startDateTimeProperty.set(startDateTimeProperty.get().with(newValue))})
         startTimeProperty.addListener({(observable, oldValue, newValue)-> startDateTimeProperty.set(startDateTimeProperty.get().with(newValue))})
         endDateProperty.addListener({(observable, oldValue, newValue)-> endDateTimeProperty.set(endDateTimeProperty.get().with(newValue))})
@@ -90,6 +98,8 @@ class CalendarEvent {
     }
 
     override fun toString(): String {
-        return ObjectMapper().writeValueAsString(this)
+        val mapper = ObjectMapper()
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+        return mapper.writeValueAsString(this)
     }
 }

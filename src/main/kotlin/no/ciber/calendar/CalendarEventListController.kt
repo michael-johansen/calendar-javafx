@@ -67,8 +67,12 @@ class CalendarEventListController : Initializable {
         val calendarEvent = CalendarEvent()
         val now = LocalDateTime.now()
         val zoneOffset = ZoneOffset.ofHours(0)
-        calendarEvent.startDate = DateTimeFormatter.ISO_INSTANT.format(now.toInstant(zoneOffset))
-        calendarEvent.endDate = DateTimeFormatter.ISO_INSTANT.format(now.plus(2, ChronoUnit.HOURS).toInstant(zoneOffset))
+        calendarEvent.name = "My super-sweet event"
+        calendarEvent.description = "This will be an awesome event! Be there or be square."
+        calendarEvent.location = "Somewhere! Here? There? Everywhere!"
+        calendarEvent.createdDate = Settings.eventDateFormat().format(now.atOffset(zoneOffset))
+        calendarEvent.startDate = Settings.eventDateFormat().format(now.atOffset(zoneOffset))
+        calendarEvent.endDate = Settings.eventDateFormat().format(now.plus(2, ChronoUnit.HOURS).atOffset(zoneOffset))
         Event.fireEvent(event.getTarget(), NavigateToCalendarEventDetails(calendarEvent))
     }
 }
