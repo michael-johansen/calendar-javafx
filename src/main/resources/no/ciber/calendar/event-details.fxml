@@ -39,7 +39,8 @@
                 <Button text="Tilbake" onAction="#goBack"></Button>
                 <Button text="Meld meg på!" onAction="#signUp"></Button>
                 <Pane HBox.hgrow="ALWAYS" />
-                <Button onAction="#save">Save</Button>
+                <Button fx:id="saveButton" onAction="#save">Save</Button>
+                <Button fx:id="deleteButton" onAction="#delete">Slett</Button>
             </ToolBar>
         </VBox>
     </center>

@@ -3,8 +3,11 @@ package no.ciber.calendar
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
+import com.mashape.unirest.http.HttpResponse
 import com.mashape.unirest.http.Unirest
 import javafx.application.Platform
+import javafx.beans.binding.Bindings
+import javafx.beans.binding.BooleanBinding
 import javafx.beans.property.ReadOnlyObjectProperty
 import javafx.collections.FXCollections
 import javafx.event
@@ -30,7 +33,8 @@ class CalendarEventDetailController(val event: CalendarEvent) : Initializable {
     FXML var endDate: DatePicker? = null
     FXML var endTime: TextField? = null
     FXML var locationTextField: TextField? = null
-
+    FXML var saveButton : Button? = null
+    FXML var deleteButton : Button? = null
 
     override fun initialize(location: URL?, resources: ResourceBundle?) {
         name!!.textProperty().bindBidirectional(event.nameProperty)
@@ -46,6 +50,16 @@ class CalendarEventDetailController(val event: CalendarEvent) : Initializable {
 
         startFormatter.valueProperty().bindBidirectional(event.startTimeProperty)
         endFormatter.valueProperty().bindBidirectional(event.endTimeProperty)
+
+        val isNotValid: BooleanBinding = event.nameProperty.isEmpty()
+                .or(event.descriptionProperty.isEmpty())
+                .or(event.locationProperty.isEmpty())
+                // Need to find a better way of comparing these.
+                .or(event.endDateTimeProperty.asString().lessThan(event.startDateTimeProperty.asString()))
+
+
+
+        saveButton!!.disableProperty().bind(isNotValid)
     }
 
     public fun signUp() {
@@ -59,18 +73,33 @@ class CalendarEventDetailController(val event: CalendarEvent) : Initializable {
             val jsonString = mapper.writeValueAsString(event)
             println("Posting:\n $jsonString")
 
-            val post = Unirest.post(Settings.eventServiceUrl)
-            post.header("Content-Type", "application/json")
-            post.body(jsonString)
-            val jsonStringResponse = post.asString()
+            val request = if (event.id == null) Unirest.post(Settings.eventServiceUrl) else Unirest.put("${Settings.eventServiceUrl}/${event.id}");
+            request.header("Content-Type", "application/json")
+            request.body(jsonString)
+            val jsonStringResponse = request.asString()
 
-            println("Response:")
-            println("${jsonStringResponse.getStatus()} - ${jsonStringResponse.getStatusText()}")
+            printResponse(jsonStringResponse)
 
             val jsonNode: JsonNode = mapper.readTree(jsonStringResponse.getBody())
             println(mapper.writeValueAsString(jsonNode))
         }
 
+    }
+
+    private fun printResponse(jsonStringResponse: HttpResponse<String>) {
+        println("Response:")
+        println("${jsonStringResponse.getStatus()} - ${jsonStringResponse.getStatusText()}")
+    }
+
+    public fun delete(actionEvent: ActionEvent){
+        Platform.runLater {
+            val request = Unirest.delete("${Settings.eventServiceUrl}/${event.id}")
+            val response = request.asString()
+            printResponse(response)
+            if(response.getStatus() in 200..299){
+                Event.fireEvent(actionEvent.getTarget(), NavigateToCalendarEventList())
+            }
+        }
     }
 
     public fun goBack(event: Event) {
