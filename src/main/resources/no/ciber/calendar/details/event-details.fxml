@@ -13,15 +13,14 @@
                 <Insets top="10" left="10" bottom="10" right="10"/>
             </padding>
 
-            <Label>Title</Label>
+            <Label text="%details.title" />
             <TextField fx:id="name"></TextField>
 
-            <Label>Description</Label>
-            <TextArea fx:id="description" editable="true">
-                <text></text>
-            </TextArea>
+            <Label text="%details.description" />
+            <TextArea fx:id="description" editable="true" />
 
-            <Label>When is it?</Label>
+
+            <Label text="%details.time" />
             <HBox >
                 <DatePicker fx:id="startDate"></DatePicker>
                 <TextField fx:id="startTime"></TextField>
@@ -30,17 +29,17 @@
                 <TextField fx:id="endTime"></TextField>
             </HBox>
 
-            <Label>Where is it?</Label>
+            <Label text="%details.location"></Label>
             <TextField fx:id="locationTextField"></TextField>
 
             <Pane VBox.vgrow="ALWAYS"></Pane>
 
             <ToolBar>
-                <Button text="Tilbake" onAction="#goBack"></Button>
-                <Button text="Meld meg på!" onAction="#signUp"></Button>
+                <Button onAction="#goBack" text="%details.back"></Button>
+                <Button onAction="#signUp" text="%details.signUp"></Button>
                 <Pane HBox.hgrow="ALWAYS" />
-                <Button fx:id="saveButton" onAction="#save">Save</Button>
-                <Button fx:id="deleteButton" onAction="#delete">Slett</Button>
+                <Button fx:id="saveButton" onAction="#save" text="%details.save"></Button>
+                <Button fx:id="deleteButton" onAction="#delete" text="%details.delete"></Button>
             </ToolBar>
         </VBox>
     </center>

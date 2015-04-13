@@ -19,13 +19,15 @@ import java.net.URL
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.time.temporal.ChronoUnit
+import java.util.Locale
 import java.util.ResourceBundle
 
-class CalendarEventListController : Initializable {
+class CalendarEventListController(val locale:Locale) : Initializable {
     FXML var eventListView: ListView<CalendarEvent>? = null
     FXML var taskRunningIndicator: CheckBox? = null
     FXML var loadingLabel: Label? = null
     FXML var searchMode: ChoiceBox<SearchMode>? = null
+    FXML var localeChoiceBox: ChoiceBox<Locale>? = null
 
     val fetchEventListService = FetchEventListService()
 
@@ -41,6 +43,13 @@ class CalendarEventListController : Initializable {
         searchMode!!.setItems(simpleListProperty)
         searchMode!!.getSelectionModel().select(SearchMode.Upcoming)
 
+        localeChoiceBox!!.setItems(FXCollections.observableList(listOf(Locale.ENGLISH, Locale("no"))))
+        localeChoiceBox!!.getSelectionModel().select(locale)
+        localeChoiceBox!!.getSelectionModel().selectedItemProperty().addListener({
+            observable, oldValue, newValue ->
+            Event.fireEvent(localeChoiceBox, ChangeLocale(newValue))
+            Event.fireEvent(localeChoiceBox, NavigateToCalendarEventList())
+        })
 
         handleUpdateClicked()
     }

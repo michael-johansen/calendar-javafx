@@ -15,15 +15,16 @@
 
     <ToolBar>
         <ChoiceBox fx:id="searchMode"></ChoiceBox>
-        <Button text="Oppdater" onAction="#handleUpdateClicked"></Button>
-        <Button text="Opprett" onAction="#handleCreateClicked"></Button>
+        <Button text="%list.update" onAction="#handleUpdateClicked"></Button>
+        <Button text="%list.create" onAction="#handleCreateClicked"></Button>
+        <ChoiceBox fx:id="localeChoiceBox" />
     </ToolBar>
 
     <ListView fx:id="eventListView" onMouseClicked="#handleEventSelected"></ListView>
 
     <ToolBar>
         <CheckBox fx:id="taskRunningIndicator" text="tasks are running?" disable="true"></CheckBox>
-        <Label fx:id="loadingLabel">Please wait. We're fetching your events.</Label>
+        <Label fx:id="loadingLabel" text="%list.fetching"></Label>
 
     </ToolBar>
 
