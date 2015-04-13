@@ -7,19 +7,21 @@ import com.mashape.unirest.http.HttpResponse
 import com.mashape.unirest.http.Unirest
 import javafx.application.Platform
 import javafx.beans.binding.BooleanBinding
+import javafx.concurrent.Task
 import javafx.event.ActionEvent
 import javafx.event.Event
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
 import javafx.scene.control.*
 import javafx.util.converter.LocalTimeStringConverter
+import no.ciber.calendar.CalendarEventRestRepository
 import no.ciber.calendar.model.CalendarEvent
 import no.ciber.calendar.NavigateToCalendarEventList
 import no.ciber.calendar.Settings
 import java.net.URL
 import java.util.ResourceBundle
 
-class CalendarEventDetailController(val event: CalendarEvent) : Initializable {
+class DetailController(val event: CalendarEvent) : Initializable {
     FXML var name: TextField? = null
     FXML var description: TextArea? = null
     FXML var startDate: DatePicker? = null
@@ -61,39 +63,25 @@ class CalendarEventDetailController(val event: CalendarEvent) : Initializable {
     }
 
     public fun save(){
-        Platform.runLater {
-            val mapper = ObjectMapper()
-            mapper.enable(SerializationFeature.INDENT_OUTPUT);
-            val jsonString = mapper.writeValueAsString(event)
-            println("Posting:\n $jsonString")
-
-            val request = if (event.id == null) Unirest.post(Settings.eventServiceUrl) else Unirest.put("${Settings.eventServiceUrl}/${event.id}");
-            request.header("Content-Type", "application/json")
-            request.body(jsonString)
-            val jsonStringResponse = request.asString()
-
-            printResponse(jsonStringResponse)
-
-            val jsonNode: JsonNode = mapper.readTree(jsonStringResponse.getBody())
-            println(mapper.writeValueAsString(jsonNode))
-        }
-
-    }
-
-    private fun printResponse(jsonStringResponse: HttpResponse<String>) {
-        println("Response:")
-        println("${jsonStringResponse.getStatus()} - ${jsonStringResponse.getStatusText()}")
-    }
-
-    public fun delete(actionEvent: ActionEvent){
-        Platform.runLater {
-            val request = Unirest.delete("${Settings.eventServiceUrl}/${event.id}")
-            val response = request.asString()
-            printResponse(response)
-            if(response.getStatus() in 200..299){
-                Event.fireEvent(actionEvent.getTarget(), NavigateToCalendarEventList())
+        val task = object : Task<Unit>() {
+            override fun call() {
+                CalendarEventRestRepository.save(event)
+                Event.fireEvent(saveButton, NavigateToCalendarEventList())
             }
+
         }
+        Thread(task).start()
+    }
+
+    public fun delete(){
+        val task = object : Task<Unit>() {
+            override fun call() {
+                CalendarEventRestRepository.delete(event)
+                Event.fireEvent(deleteButton, NavigateToCalendarEventList())
+            }
+
+        }
+        Thread(task).start()
     }
 
     public fun goBack(event: Event) {

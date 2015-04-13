@@ -10,6 +10,7 @@ import javafx.scene.Parent
 import javafx.scene.Scene
 import javafx.scene.control.Label
 import javafx.stage.Stage
+import javafx.stage.StageStyle
 import org.slf4j.LoggerFactory
 import java.net.URL
 import java.util.Arrays
@@ -34,7 +35,7 @@ class CalendarApplication : Application() {
     }
 
     fun gotoView(fxml: String, vararg arguments:Any) {
-        logger.info("Navigating to view $fxml, with arguments: ${Arrays.toString(arguments)}")
+        logger.info("Navigating to view $fxml, with arguments: ${arguments.toList()}")
         fun defaultControllerFactory(clazz: Class<*>): Any {
             logger.info("Initializing controller $clazz with ${arguments.toList()}")
             val arrayOfClasss = arguments.map { it.javaClass }.copyToArray()
@@ -57,7 +58,7 @@ class CalendarApplication : Application() {
         return { event ->
             when (event) {
                 is NavigateToCalendarEventDetails -> gotoView(fxml = event.location, arguments = event.calendarEvent)
-                is NavigateToCalendarEventList -> gotoView(fxml = event.location, arguments = locale)
+                is NavigateToCalendarEventList -> gotoView(fxml = event.location, arguments = * array(locale, event.searchMode))
                 is ChangeLocale -> {
                     logger.info("Changing locale from $locale to ${event.locale}")
                     locale = event.locale

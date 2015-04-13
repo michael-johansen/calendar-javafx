@@ -8,6 +8,9 @@ class CalendarEventListCell : ListCell<CalendarEvent>(){
         super.updateItem(item, empty)
         if (item != null && !empty) {
             textProperty().bind(item.nameProperty)
+        } else{
+            textProperty().unbind()
+            textProperty().set("");
         }
     }
 }

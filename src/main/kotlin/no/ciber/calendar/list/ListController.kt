@@ -22,26 +22,28 @@ import java.time.temporal.ChronoUnit
 import java.util.Locale
 import java.util.ResourceBundle
 
-class CalendarEventListController(val locale:Locale) : Initializable {
+class ListController(val locale:Locale, val searchMode: SearchMode) : Initializable {
     FXML var eventListView: ListView<CalendarEvent>? = null
     FXML var taskRunningIndicator: CheckBox? = null
     FXML var loadingLabel: Label? = null
-    FXML var searchMode: ChoiceBox<SearchMode>? = null
+    FXML var searchModeChoiceBox: ChoiceBox<SearchMode>? = null
     FXML var localeChoiceBox: ChoiceBox<Locale>? = null
 
-    val fetchEventListService = FetchEventListService()
-
     override fun initialize(location: URL?, resources: ResourceBundle?) {
-        eventListView!!.itemsProperty().bind(fetchEventListService.valueProperty())
-        eventListView!!.visibleProperty().bind(Bindings.not(fetchEventListService.runningProperty()))
+        eventListView!!.itemsProperty().bind(FetchEventListService.valueProperty())
+        eventListView!!.visibleProperty().bind(Bindings.not(FetchEventListService.runningProperty()))
         eventListView!!.setCellFactory { CalendarEventListCell() }
-        taskRunningIndicator!!.selectedProperty().bind(fetchEventListService.runningProperty())
-        loadingLabel!!.visibleProperty().bind(fetchEventListService.runningProperty())
+        taskRunningIndicator!!.selectedProperty().bind(FetchEventListService.runningProperty())
+        loadingLabel!!.visibleProperty().bind(FetchEventListService.runningProperty())
 
+        searchModeChoiceBox!!.setItems(FXCollections.observableArrayList(SearchMode.values().toList()))
+        searchModeChoiceBox!!.getSelectionModel().select(searchMode)
+        searchModeChoiceBox!!.getSelectionModel().selectedItemProperty().addListener({
+            observable, oldValue, newValue ->
+            handleUpdateClicked()
+        })
+        FetchEventListService.searchModeProperty.bind(searchModeChoiceBox!!.valueProperty())
 
-        val simpleListProperty = FXCollections.observableArrayList(SearchMode.values().toList())
-        searchMode!!.setItems(simpleListProperty)
-        searchMode!!.getSelectionModel().select(SearchMode.Upcoming)
 
         localeChoiceBox!!.setItems(FXCollections.observableList(listOf(Locale.ENGLISH, Locale("no"))))
         localeChoiceBox!!.getSelectionModel().select(locale)
@@ -55,9 +57,10 @@ class CalendarEventListController(val locale:Locale) : Initializable {
     }
 
     public fun handleUpdateClicked() {
-        if (fetchEventListService.isRunning()) fetchEventListService.cancel()
-        if (fetchEventListService.getState() != Worker.State.READY) fetchEventListService.reset()
-        fetchEventListService.start()
+        FetchEventListService.getValue()?.clear()
+        if (FetchEventListService.isRunning()) FetchEventListService.cancel()
+        if (FetchEventListService.getState() != Worker.State.READY) FetchEventListService.reset()
+        FetchEventListService.start()
     }
 
     public fun handleEventSelected(event: MouseEvent) {

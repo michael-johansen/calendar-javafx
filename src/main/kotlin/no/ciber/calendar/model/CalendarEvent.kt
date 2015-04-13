@@ -46,7 +46,9 @@ class CalendarEvent {
 
 
     var name: String?
-        get() = nameProperty.getValue()
+        get() {
+            return nameProperty.getValue()
+        }
         set(value) = nameProperty.set(value)
     var description: String?
         get() = descriptionProperty.getValue()

@@ -6,7 +6,7 @@
 <?import javafx.scene.text.*?>
 <?import javafx.collections.ObservableList?>
 <VBox xmlns:fx="http://javafx.com/fxml" styleClass="root"
-      fx:controller="no.ciber.calendar.list.CalendarEventListController">
+      fx:controller="no.ciber.calendar.list.ListController">
 
     <padding>
         <Insets top="10" left="10" bottom="10" right="10"/>
@@ -14,7 +14,7 @@
 
 
     <ToolBar>
-        <ChoiceBox fx:id="searchMode"></ChoiceBox>
+        <ChoiceBox fx:id="searchModeChoiceBox"></ChoiceBox>
         <Button text="%list.update" onAction="#handleUpdateClicked"></Button>
         <Button text="%list.create" onAction="#handleCreateClicked"></Button>
         <ChoiceBox fx:id="localeChoiceBox" />
