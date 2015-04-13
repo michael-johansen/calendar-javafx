@@ -1,4 +1,4 @@
-package no.ciber.calendar
+package no.ciber.calendar.details
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -6,23 +6,17 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import com.mashape.unirest.http.HttpResponse
 import com.mashape.unirest.http.Unirest
 import javafx.application.Platform
-import javafx.beans.binding.Bindings
 import javafx.beans.binding.BooleanBinding
-import javafx.beans.property.ReadOnlyObjectProperty
-import javafx.collections.FXCollections
-import javafx.event
 import javafx.event.ActionEvent
 import javafx.event.Event
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
 import javafx.scene.control.*
-import javafx.util.StringConverter
 import javafx.util.converter.LocalTimeStringConverter
+import no.ciber.calendar.model.CalendarEvent
+import no.ciber.calendar.NavigateToCalendarEventList
+import no.ciber.calendar.Settings
 import java.net.URL
-import java.time.LocalTime
-import java.time.format.DateTimeFormatter
-import java.time.temporal.TemporalQueries
-import java.util.ArrayList
 import java.util.ResourceBundle
 
 class CalendarEventDetailController(val event: CalendarEvent) : Initializable {

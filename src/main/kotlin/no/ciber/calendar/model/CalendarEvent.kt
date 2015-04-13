@@ -1,27 +1,19 @@
-package no.ciber.calendar
+package no.ciber.calendar.model
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.ObjectWriter
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import javafx.beans.property.SimpleListProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.property.SimpleStringProperty
-import javafx.beans.value
-import javafx.beans.value.ObservableValue
 import javafx.collections.ObservableList
-import java.io.PrintWriter
-import java.io.StringWriter
-import java.time.*
-import java.time.format.DateTimeFormatter
-import java.time.temporal.ChronoField
-import java.time.temporal.TemporalAdjusters
-import java.time.temporal.TemporalField
-import java.util.ArrayList
+import no.ciber.calendar.Settings
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.ZoneOffset
 
 JsonIgnoreProperties(array(
         "nameProperty",

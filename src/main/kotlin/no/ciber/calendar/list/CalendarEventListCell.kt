@@ -1,6 +1,7 @@
-package no.ciber.calendar
+package no.ciber.calendar.list
 
 import javafx.scene.control.ListCell
+import no.ciber.calendar.model.CalendarEvent
 
 class CalendarEventListCell : ListCell<CalendarEvent>(){
     override fun updateItem(item: CalendarEvent?, empty: Boolean) {

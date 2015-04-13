@@ -1,4 +1,4 @@
-package no.ciber.calendar
+package no.ciber.calendar.model
 
 enum class SearchMode {
     All

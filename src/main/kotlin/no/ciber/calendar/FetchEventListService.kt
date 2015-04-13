@@ -9,6 +9,7 @@ import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.concurrent.Service
 import javafx.concurrent.Task
+import no.ciber.calendar.model.CalendarEvent
 import org.slf4j.LoggerFactory
 
 

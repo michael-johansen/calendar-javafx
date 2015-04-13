@@ -1,10 +1,7 @@
-package no.ciber.calendar
+package no.ciber.calendar.list
 
 import javafx.beans.binding.Bindings
-import javafx.beans.property.SimpleListProperty
 import javafx.collections.FXCollections
-import javafx.collections.ObservableList
-import javafx.concurrent.Service
 import javafx.concurrent.Worker
 import javafx.event.ActionEvent
 import javafx.event.Event
@@ -15,15 +12,13 @@ import javafx.scene.control.ChoiceBox
 import javafx.scene.control.Label
 import javafx.scene.control.ListView
 import javafx.scene.input.MouseEvent
+import no.ciber.calendar.*
+import no.ciber.calendar.model.CalendarEvent
+import no.ciber.calendar.model.SearchMode
 import java.net.URL
-import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneOffset
-import java.time.format.DateTimeFormatter
-import java.time.temporal.ChronoField
 import java.time.temporal.ChronoUnit
-import java.time.temporal.TemporalAdjusters
-import java.util.ArrayList
 import java.util.ResourceBundle
 
 class CalendarEventListController : Initializable {
@@ -76,4 +71,3 @@ class CalendarEventListController : Initializable {
         Event.fireEvent(event.getTarget(), NavigateToCalendarEventDetails(calendarEvent))
     }
 }
-

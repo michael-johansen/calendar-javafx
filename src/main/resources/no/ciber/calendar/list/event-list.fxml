@@ -6,7 +6,7 @@
 <?import javafx.scene.text.*?>
 <?import javafx.collections.ObservableList?>
 <VBox xmlns:fx="http://javafx.com/fxml" styleClass="root"
-      fx:controller="no.ciber.calendar.CalendarEventListController">
+      fx:controller="no.ciber.calendar.list.CalendarEventListController">
 
     <padding>
         <Insets top="10" left="10" bottom="10" right="10"/>
@@ -28,7 +28,7 @@
     </ToolBar>
 
     <stylesheets>
-        <URL value="@calendar.css"/>
+        <URL value="@../calendar.css"/>
     </stylesheets>
 </VBox>
 
