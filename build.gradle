@@ -8,6 +8,7 @@ buildscript {
 }
 apply plugin: 'java'
 apply plugin: 'kotlin'
+apply plugin: 'application'
 
 sourceCompatibility = 1.8
 version = '1.0'
@@ -34,3 +35,5 @@ test.testClassesDir = project.tasks.compileTestKotlin.destinationDir
 task wrapper(type: Wrapper) {
     gradleVersion="1.6"
 }
+
+mainClassName = "no.ciber.calendar.CalendarApplication"
