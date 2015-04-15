@@ -2,9 +2,6 @@ package no.ciber.calendar.model
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.SerializationFeature
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import javafx.beans.property.SimpleListProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.property.SimpleStringProperty
@@ -29,11 +26,9 @@ JsonIgnoreProperties(array(
         "locationProperty",
         "usersProperty"
 ))
-JsonDeserialize()
 class CalendarEvent {
     val nameProperty = SimpleStringProperty()
     val descriptionProperty = SimpleStringProperty()
-    val locationProperty = SimpleStringProperty()
     val idProperty = SimpleStringProperty()
     val createdDateProperty = SimpleObjectProperty<LocalDateTime>()
     val startDateTimeProperty = SimpleObjectProperty<LocalDateTime>()
@@ -42,20 +37,16 @@ class CalendarEvent {
     val endDateProperty = SimpleObjectProperty<LocalDate>()
     val startTimeProperty = SimpleObjectProperty<LocalTime>()
     val endTimeProperty = SimpleObjectProperty<LocalTime>()
-    val usersProperty: ObservableList<String> = SimpleListProperty()
+    val locationProperty = SimpleObjectProperty<Location>()
+    val usersProperty: ObservableList<User> = SimpleListProperty()
 
 
-    var name: String?
-        get() {
-            return nameProperty.getValue()
-        }
+    public var name: String?
+        get() = nameProperty.getValue()
         set(value) = nameProperty.set(value)
     var description: String?
         get() = descriptionProperty.getValue()
         set(value) = descriptionProperty.set(value)
-    var location: String?
-        get() = locationProperty.getValue()
-        set(value) = locationProperty.set(value)
     var id: String?
         get() = idProperty.getValue()
         set(value) = idProperty.set(value)
@@ -76,24 +67,23 @@ class CalendarEvent {
             endDateProperty.setValue(endDateTimeProperty.get().toLocalDate())
             endTimeProperty.setValue(endDateTimeProperty.get().toLocalTime())
         }
-    val users: List<String>
-         get() = usersProperty.toList()
 
-    JsonProperty(value="class")
-    public fun getClazz():String = "no.ciber.service.Event"
-    public fun setClazz(clazz:String){}
+    var location: Location?
+        get() = locationProperty.getValue()
+        set(value) = locationProperty.set(value)
+    val users: List<User>
+        get() = usersProperty.toList()
 
-    constructor(){
+    constructor() {
         /** Update DateTime when date or time changes */
-        startDateProperty.addListener({(observable, oldValue, newValue)-> startDateTimeProperty.set(startDateTimeProperty.get().with(newValue))})
-        startTimeProperty.addListener({(observable, oldValue, newValue)-> startDateTimeProperty.set(startDateTimeProperty.get().with(newValue))})
-        endDateProperty.addListener({(observable, oldValue, newValue)-> endDateTimeProperty.set(endDateTimeProperty.get().with(newValue))})
-        endTimeProperty.addListener({(observable, oldValue, newValue)-> endDateTimeProperty.set(endDateTimeProperty.get().with(newValue))})
+        startDateProperty.addListener({(observable, oldValue, newValue) -> startDateTimeProperty.set(startDateTimeProperty.get().with(newValue)) })
+        startTimeProperty.addListener({(observable, oldValue, newValue) -> startDateTimeProperty.set(startDateTimeProperty.get().with(newValue)) })
+        endDateProperty.addListener({(observable, oldValue, newValue) -> endDateTimeProperty.set(endDateTimeProperty.get().with(newValue)) })
+        endTimeProperty.addListener({(observable, oldValue, newValue) -> endDateTimeProperty.set(endDateTimeProperty.get().with(newValue)) })
     }
 
     override fun toString(): String {
-        val mapper = ObjectMapper()
-        mapper.enable(SerializationFeature.INDENT_OUTPUT);
-        return mapper.writeValueAsString(this)
+        return """Event[$name: ($startDate-$endDate) ]""""
     }
 }
+

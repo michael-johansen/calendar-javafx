@@ -30,7 +30,7 @@
             </HBox>
 
             <Label text="%details.location"></Label>
-            <TextField fx:id="locationTextField"></TextField>
+            <ChoiceBox fx:id="locationChoiceBox"></ChoiceBox>
 
             <Pane VBox.vgrow="ALWAYS"></Pane>
 

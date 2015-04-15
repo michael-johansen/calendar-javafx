@@ -14,6 +14,7 @@ import javafx.scene.control.ListView
 import javafx.scene.input.MouseEvent
 import no.ciber.calendar.*
 import no.ciber.calendar.model.CalendarEvent
+import no.ciber.calendar.model.Location
 import no.ciber.calendar.model.SearchMode
 import java.net.URL
 import java.time.LocalDateTime
@@ -76,7 +77,7 @@ class ListController(val locale:Locale, val searchMode: SearchMode) : Initializa
         val zoneOffset = ZoneOffset.ofHours(0)
         calendarEvent.name = "My super-sweet event"
         calendarEvent.description = "This will be an awesome event! Be there or be square."
-        calendarEvent.location = "Somewhere! Here? There? Everywhere!"
+        calendarEvent.location = null;
         calendarEvent.createdDate = Settings.eventDateFormat().format(now.atOffset(zoneOffset))
         calendarEvent.startDate = Settings.eventDateFormat().format(now.atOffset(zoneOffset))
         calendarEvent.endDate = Settings.eventDateFormat().format(now.plus(2, ChronoUnit.HOURS).atOffset(zoneOffset))

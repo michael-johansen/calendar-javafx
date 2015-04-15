@@ -10,6 +10,7 @@ import javafx.concurrent.Service
 import javafx.concurrent.Task
 import no.ciber.calendar.model.CalendarEvent
 import no.ciber.calendar.model.SearchMode
+import no.ciber.calendar.repositories.CalendarEventRestRepository
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
