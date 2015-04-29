@@ -78,9 +78,9 @@ class ListController(val locale:Locale, val searchMode: SearchMode) : Initializa
         calendarEvent.name = "My super-sweet event"
         calendarEvent.description = "This will be an awesome event! Be there or be square."
         calendarEvent.location = null;
-        calendarEvent.createdDate = Settings.eventDateFormat().format(now.atOffset(zoneOffset))
-        calendarEvent.startDate = Settings.eventDateFormat().format(now.atOffset(zoneOffset))
-        calendarEvent.endDate = Settings.eventDateFormat().format(now.plus(2, ChronoUnit.HOURS).atOffset(zoneOffset))
+        calendarEvent.createdDate = now.atOffset(zoneOffset).toInstant().toEpochMilli()
+        calendarEvent.startDate = now.atOffset(zoneOffset).toInstant().toEpochMilli()
+        calendarEvent.endDate = now.plus(2, ChronoUnit.HOURS).atOffset(zoneOffset).toInstant().toEpochMilli()
         Event.fireEvent(event.getTarget(), NavigateToCalendarEventDetails(calendarEvent))
     }
 }

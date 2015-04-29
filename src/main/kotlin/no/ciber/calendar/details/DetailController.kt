@@ -34,7 +34,7 @@ class DetailController(val event: CalendarEvent) : Initializable {
         startDate!!.valueProperty().bindBidirectional(event.startDateProperty)
         endDate!!.valueProperty().bindBidirectional(event.endDateProperty)
 
-        locationChoiceBox!!.setConverter(LocationConverter)l
+        locationChoiceBox!!.setConverter(LocationConverter)
         locationChoiceBox!!.setItems(FXCollections.observableArrayList(LocationRepository.getAllLocations()))
         locationChoiceBox!!.valueProperty().bindBidirectional(event.locationProperty)
         locationChoiceBox!!.getSelectionModel().select(event.location)

@@ -11,6 +11,7 @@ import no.ciber.calendar.model.CalendarEvent
 import no.ciber.calendar.model.SearchMode
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import java.time.Instant
 import java.time.ZonedDateTime
 
 /**
@@ -26,15 +27,15 @@ public object CalendarEventRestRepository {
         logger.info("Fetching $searchMode events")
         val request = Unirest.get(Settings.eventServiceUrl + "events")
         when (searchMode) {
-            SearchMode.Past -> request.queryString("intervalEnd", Settings.eventDateFormat().format(ZonedDateTime.now()))
+            SearchMode.Past -> request.queryString("intervalEnd", Instant.now().toEpochMilli())
             SearchMode.Today -> {
                 val now = ZonedDateTime.now()
                 val startOfToday = now.withHour(0).withMinute(0).withSecond(0)
                 val startOfTomorrow = startOfToday.plusDays(1)
-                request.queryString("intervalStart", Settings.eventDateFormat().format(startOfToday))
-                request.queryString("intervalEnd", Settings.eventDateFormat().format(startOfTomorrow))
+                request.queryString("intervalStart", startOfToday.toInstant().toEpochMilli())
+                request.queryString("intervalEnd", startOfTomorrow.toInstant().toEpochMilli())
             }
-            SearchMode.Upcoming -> request.queryString("intervalStart", Settings.eventDateFormat().format(ZonedDateTime.now()))
+            SearchMode.Upcoming -> request.queryString("intervalStart", Instant.now().toEpochMilli())
         }
 
         logRequest(request)

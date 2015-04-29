@@ -7,6 +7,6 @@ import java.util.Locale
 
 open class NavigateToLocationEvent(val location: String) : Event(Event.ANY)
 class NavigateToCalendarEventDetails(val calendarEvent: CalendarEvent) : NavigateToLocationEvent("details/event-details.fxml")
-class NavigateToCalendarEventList(val searchMode:SearchMode = SearchMode.Upcoming) : NavigateToLocationEvent("list/event-list.fxml")
+class NavigateToCalendarEventList(val searchMode:SearchMode = SearchMode.All) : NavigateToLocationEvent("list/event-list.fxml")
 
 class ChangeLocale(val locale: Locale) : Event(Event.ANY)

@@ -7,10 +7,7 @@ import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.collections.ObservableList
 import no.ciber.calendar.Settings
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.LocalTime
-import java.time.ZoneOffset
+import java.time.*
 
 JsonIgnoreProperties(array(
         "nameProperty",
@@ -30,7 +27,7 @@ class CalendarEvent {
     val nameProperty = SimpleStringProperty()
     val descriptionProperty = SimpleStringProperty()
     val idProperty = SimpleStringProperty()
-    val createdDateProperty = SimpleObjectProperty<LocalDateTime>()
+    val createdDateProperty = SimpleObjectProperty<Long>()
     val startDateTimeProperty = SimpleObjectProperty<LocalDateTime>()
     val endDateTimeProperty = SimpleObjectProperty<LocalDateTime>()
     val startDateProperty = SimpleObjectProperty<LocalDate>()
@@ -50,23 +47,15 @@ class CalendarEvent {
     var id: String?
         get() = idProperty.getValue()
         set(value) = idProperty.set(value)
-    var createdDate: String?
-        get() = createdDateProperty.getValue().atOffset(ZoneOffset.ofHours(0)).format(Settings.eventDateFormat())
-        set(value) = createdDateProperty.setValue(LocalDateTime.parse(value, Settings.eventDateFormat()))
-    var startDate: String?
-        get() = startDateTimeProperty.getValue().atOffset(ZoneOffset.ofHours(0)).format(Settings.eventDateFormat())
-        set(value) {
-            startDateTimeProperty.setValue(LocalDateTime.parse(value, Settings.eventDateFormat()))
-            startDateProperty.setValue(startDateTimeProperty.get().toLocalDate())
-            startTimeProperty.setValue(startDateTimeProperty.get().toLocalTime())
-        }
-    var endDate: String?
-        get() = endDateTimeProperty.getValue().atOffset(ZoneOffset.ofHours(0)).format(Settings.eventDateFormat())
-        set(value) {
-            endDateTimeProperty.setValue(LocalDateTime.parse(value, Settings.eventDateFormat()))
-            endDateProperty.setValue(endDateTimeProperty.get().toLocalDate())
-            endTimeProperty.setValue(endDateTimeProperty.get().toLocalTime())
-        }
+    var createdDate: Long?
+        get() = createdDateProperty.getValue()
+        set(value) = createdDateProperty.set(value)
+    var startDate: Long?
+        get() = startDateTimeProperty.getValue().toInstant(ZoneOffset.ofHours(0)).toEpochMilli()
+        set(value) = setDate(value, startDateTimeProperty, startDateProperty, startTimeProperty)
+    var endDate: Long?
+        get() = endDateTimeProperty.getValue().toInstant(ZoneOffset.ofHours(0)).toEpochMilli()
+        set(value)= setDate(value, endDateTimeProperty, endDateProperty, endTimeProperty)
 
     var location: Location?
         get() = locationProperty.getValue()
@@ -84,6 +73,27 @@ class CalendarEvent {
 
     override fun toString(): String {
         return """Event[$name: ($startDate-$endDate) ]""""
+    }
+
+    fun setDate(
+            epochMillis: Long?,
+            dateTime: SimpleObjectProperty<LocalDateTime>,
+            date: SimpleObjectProperty<LocalDate>,
+            time: SimpleObjectProperty<LocalTime>
+    ) {
+        when (epochMillis) {
+            null -> {
+                dateTime.set(null)
+                date.set(null)
+                time.set(null)
+            }
+            else -> {
+                val localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(epochMillis), ZoneId.systemDefault())
+                dateTime.setValue(localDateTime)
+                date.set(localDateTime.toLocalDate())
+                time.set(localDateTime.toLocalTime())
+            }
+        }
     }
 }
 

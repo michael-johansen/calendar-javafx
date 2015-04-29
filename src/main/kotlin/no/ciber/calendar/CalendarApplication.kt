@@ -10,10 +10,8 @@ import javafx.scene.Parent
 import javafx.scene.Scene
 import javafx.scene.control.Label
 import javafx.stage.Stage
-import javafx.stage.StageStyle
 import org.slf4j.LoggerFactory
 import java.net.URL
-import java.util.Arrays
 import java.util.Locale
 import java.util.ResourceBundle
 
@@ -28,10 +26,8 @@ class CalendarApplication : Application() {
         primaryStage.addEventHandler(Event.ANY, applicationEventHandler())
         primaryStage.show()
 
-        Platform.runLater({
-            logger.info("Navigating to event list")
-            primaryStage.fireEvent(NavigateToCalendarEventList())
-        })
+        logger.info("Navigating to event list")
+        primaryStage.fireEvent(NavigateToCalendarEventList())
     }
 
     fun gotoView(fxml: String, vararg arguments:Any) {
@@ -47,7 +43,8 @@ class CalendarApplication : Application() {
         loader.setLocation(getRequiredResource(fxml))
         loader.setResources(ResourceBundle.getBundle("messages", locale))
         loader.setControllerFactory (::defaultControllerFactory)
-        scene.setRoot(loader.load<Parent>())
+
+        Platform.runLater({ scene.setRoot(loader.load<Parent>()) })
     }
 
     private fun getRequiredResource(fxml: String): URL {
