@@ -1,8 +1,7 @@
-package no.ciber.calendar.details
+package no.ciber.calendar.converters
 
 import javafx.util.StringConverter
 import no.ciber.calendar.model.Location
-
 
 object LocationConverter : StringConverter<Location>() {
     override fun fromString(string: String?): Location? {

@@ -5,9 +5,11 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import javafx.beans.property.SimpleListProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.property.SimpleStringProperty
+import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import no.ciber.calendar.Settings
 import java.time.*
+import java.util.ArrayList
 
 JsonIgnoreProperties(array(
         "nameProperty",
@@ -35,7 +37,7 @@ class CalendarEvent {
     val startTimeProperty = SimpleObjectProperty<LocalTime>()
     val endTimeProperty = SimpleObjectProperty<LocalTime>()
     val locationProperty = SimpleObjectProperty<Location>()
-    val usersProperty: ObservableList<User> = SimpleListProperty()
+    val usersProperty: ObservableList<User> = SimpleListProperty(FXCollections.observableArrayList())
 
 
     public var name: String?
@@ -65,10 +67,10 @@ class CalendarEvent {
 
     constructor() {
         /** Update DateTime when date or time changes */
-        startDateProperty.addListener({(observable, oldValue, newValue) -> startDateTimeProperty.set(startDateTimeProperty.get().with(newValue)) })
-        startTimeProperty.addListener({(observable, oldValue, newValue) -> startDateTimeProperty.set(startDateTimeProperty.get().with(newValue)) })
-        endDateProperty.addListener({(observable, oldValue, newValue) -> endDateTimeProperty.set(endDateTimeProperty.get().with(newValue)) })
-        endTimeProperty.addListener({(observable, oldValue, newValue) -> endDateTimeProperty.set(endDateTimeProperty.get().with(newValue)) })
+        startDateProperty.addListener({ observable, oldValue, newValue -> startDateTimeProperty.set(startDateTimeProperty.get().with(newValue)) })
+        startTimeProperty.addListener({ observable, oldValue, newValue -> startDateTimeProperty.set(startDateTimeProperty.get().with(newValue)) })
+        endDateProperty.addListener({ observable, oldValue, newValue -> endDateTimeProperty.set(endDateTimeProperty.get().with(newValue)) })
+        endTimeProperty.addListener({ observable, oldValue, newValue -> endDateTimeProperty.set(endDateTimeProperty.get().with(newValue)) })
     }
 
     override fun toString(): String {

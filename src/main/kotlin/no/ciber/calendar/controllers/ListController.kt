@@ -1,7 +1,8 @@
-package no.ciber.calendar.list
+package no.ciber.calendar.controllers
 
 import javafx.beans.binding.Bindings
 import javafx.collections.FXCollections
+import javafx.concurrent.Service
 import javafx.concurrent.Worker
 import javafx.event.ActionEvent
 import javafx.event.Event
@@ -12,9 +13,12 @@ import javafx.scene.control.ChoiceBox
 import javafx.scene.control.Label
 import javafx.scene.control.ListView
 import javafx.scene.input.MouseEvent
-import no.ciber.calendar.*
+import no.ciber.calendar.ChangeLocale
+import no.ciber.calendar.FetchEventListService
+import no.ciber.calendar.NavigateToCalendarEventDetails
+import no.ciber.calendar.NavigateToCalendarEventList
+import no.ciber.calendar.components.CalendarEventListCell
 import no.ciber.calendar.model.CalendarEvent
-import no.ciber.calendar.model.Location
 import no.ciber.calendar.model.SearchMode
 import java.net.URL
 import java.time.LocalDateTime
@@ -23,7 +27,7 @@ import java.time.temporal.ChronoUnit
 import java.util.Locale
 import java.util.ResourceBundle
 
-class ListController(val locale:Locale, val searchMode: SearchMode) : Initializable {
+class ListController(val locale: Locale, val searchMode: SearchMode) : Initializable {
     FXML var eventListView: ListView<CalendarEvent>? = null
     FXML var taskRunningIndicator: CheckBox? = null
     FXML var loadingLabel: Label? = null

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.collections.ObservableList?>
+<VBox xmlns:fx="http://javafx.com/fxml" styleClass="root"
+      fx:controller="no.ciber.calendar.controllers.UserCreateController">
+
+    <padding>
+        <Insets top="10" left="10" bottom="10" right="10"/>
+    </padding>
+
+    <Label text="%user.firstname"></Label>
+    <TextField fx:id="firstnameTextField"></TextField>
+
+    <Label text="%user.lastname"></Label>
+    <TextField fx:id="lastnameTextField"></TextField>
+
+    <Label text="%user.email"></Label>
+    <TextField fx:id="emailTextField"></TextField>
+
+
+    <ToolBar>
+        <Button onAction="#goBack" text="%goBack" />
+        <Pane HBox.hgrow="ALWAYS" />
+        <Button onAction="#createUser" text="%user.create" />
+    </ToolBar>
+
+    <stylesheets>
+        <URL value="@../calendar.css"/>
+    </stylesheets>
+</VBox>
+
+
+

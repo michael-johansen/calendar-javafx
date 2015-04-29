@@ -1,4 +1,4 @@
-package no.ciber.calendar.list
+package no.ciber.calendar.components
 
 import javafx.scene.control.ListCell
 import no.ciber.calendar.model.CalendarEvent

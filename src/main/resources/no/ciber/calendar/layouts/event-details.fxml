@@ -6,7 +6,7 @@
 <?import javafx.scene.text.*?>
 <?import javafx.collections.ObservableList?>
 <?import javafx.scene.SubScene?>
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="no.ciber.calendar.details.DetailController">
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="no.ciber.calendar.controllers.DetailController">
     <center>
         <VBox>
             <padding>
@@ -35,8 +35,9 @@
             <Pane VBox.vgrow="ALWAYS"></Pane>
 
             <ToolBar>
-                <Button onAction="#goBack" text="%details.back"></Button>
+                <Button onAction="#goBack" text="%goBack"></Button>
                 <Button onAction="#signUp" text="%details.signUp"></Button>
+                <Button onAction="#addUsers" text="%details.addUsers"></Button>
                 <Pane HBox.hgrow="ALWAYS" />
                 <Button fx:id="saveButton" onAction="#save" text="%details.save"></Button>
                 <Button fx:id="deleteButton" onAction="#delete" text="%details.delete"></Button>

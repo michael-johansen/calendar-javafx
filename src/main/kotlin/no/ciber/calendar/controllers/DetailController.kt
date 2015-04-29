@@ -1,4 +1,4 @@
-package no.ciber.calendar.details
+package no.ciber.calendar.controllers
 
 import javafx.beans.binding.BooleanBinding
 import javafx.collections.FXCollections
@@ -8,7 +8,9 @@ import javafx.fxml.FXML
 import javafx.fxml.Initializable
 import javafx.scene.control.*
 import javafx.util.converter.LocalTimeStringConverter
+import no.ciber.calendar.NavigateToAddUsersToEvent
 import no.ciber.calendar.NavigateToCalendarEventList
+import no.ciber.calendar.converters.LocationConverter
 import no.ciber.calendar.model.CalendarEvent
 import no.ciber.calendar.model.Location
 import no.ciber.calendar.repositories.CalendarEventRestRepository
@@ -38,7 +40,7 @@ class DetailController(val event: CalendarEvent) : Initializable {
         endDate!!.valueProperty().bindBidirectional(event.endDateProperty)
 
         locationChoiceBox!!.setConverter(LocationConverter)
-        locationChoiceBox!!.setItems(FXCollections.observableArrayList(LocationRepository.getAllLocations()))
+        locationChoiceBox!!.setItems(FXCollections.observableArrayList(LocationRepository.list()))
         locationChoiceBox!!.valueProperty().bindBidirectional(event.locationProperty)
         locationChoiceBox!!.getSelectionModel().select(event.location)
 
@@ -61,11 +63,11 @@ class DetailController(val event: CalendarEvent) : Initializable {
         saveButton!!.disableProperty().bind(isNotValid)
     }
 
-    public fun signUp() {
+    fun signUp() {
 
     }
 
-    public fun save() {
+    fun save() {
         val task = object : Task<Unit>() {
             override fun call() {
                 CalendarEventRestRepository.save(event)
@@ -76,7 +78,7 @@ class DetailController(val event: CalendarEvent) : Initializable {
         Thread(task).start()
     }
 
-    public fun delete() {
+    fun delete() {
         val task = object : Task<Unit>() {
             override fun call() {
                 CalendarEventRestRepository.delete(event)
@@ -87,7 +89,11 @@ class DetailController(val event: CalendarEvent) : Initializable {
         Thread(task).start()
     }
 
-    public fun goBack(event: Event) {
+    fun goBack(event: Event) {
         Event.fireEvent(event.getTarget(), NavigateToCalendarEventList())
+    }
+
+    fun addUsers(event: Event){
+        Event.fireEvent(event.getTarget(), NavigateToAddUsersToEvent(this.event))
     }
 }
