@@ -7,17 +7,18 @@ import javafx.event.Event
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
 import javafx.scene.control.*
-import javafx.util.StringConverter
 import javafx.util.converter.LocalTimeStringConverter
-import no.ciber.calendar.repositories.CalendarEventRestRepository
 import no.ciber.calendar.NavigateToCalendarEventList
 import no.ciber.calendar.model.CalendarEvent
 import no.ciber.calendar.model.Location
+import no.ciber.calendar.repositories.CalendarEventRestRepository
 import no.ciber.calendar.repositories.LocationRepository
+import org.slf4j.LoggerFactory
 import java.net.URL
 import java.util.ResourceBundle
 
 class DetailController(val event: CalendarEvent) : Initializable {
+    private val logger = LoggerFactory.getLogger(javaClass)
     FXML var name: TextField? = null
     FXML var description: TextArea? = null
     FXML var startDate: DatePicker? = null
@@ -29,6 +30,8 @@ class DetailController(val event: CalendarEvent) : Initializable {
     FXML var deleteButton: Button? = null
 
     override fun initialize(location: URL?, resources: ResourceBundle?) {
+        logger.info("Initializing $javaClass")
+
         name!!.textProperty().bindBidirectional(event.nameProperty)
         description!!.textProperty().bindBidirectional(event.descriptionProperty)
         startDate!!.valueProperty().bindBidirectional(event.startDateProperty)

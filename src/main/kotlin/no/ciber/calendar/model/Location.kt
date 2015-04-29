@@ -11,14 +11,14 @@ JsonIgnoreProperties(array(
         "latitudeProperty",
         "longitudeProperty"
 ))
-data class Location() {
+class Location() {
     val idProperty: SimpleStringProperty = SimpleStringProperty()
     val locationProperty: SimpleStringProperty = SimpleStringProperty()
     val descriptionProperty: SimpleStringProperty = SimpleStringProperty()
     val latitudeProperty: SimpleDoubleProperty = SimpleDoubleProperty()
     val longitudeProperty: SimpleDoubleProperty = SimpleDoubleProperty()
 
-    var id: String
+    var id: String?
         get() = idProperty.get()
         set(value) = idProperty.set(value)
     var location: String
@@ -34,5 +34,17 @@ data class Location() {
         get() = longitudeProperty.get()
         set(value) = longitudeProperty.set(value)
 
+    override fun equals(other: Any?): Boolean {
+        return if (other === this) true
+        else if (other is Location) id?.equals(other.id) ?: false
+        else false
+    }
 
+    override fun hashCode(): Int {
+        return id?.hashCode() ?: 0
+    }
+
+    override fun toString(): String {
+        return "$id - $location"
+    }
 }
