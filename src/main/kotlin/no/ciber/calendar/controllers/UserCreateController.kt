@@ -34,5 +34,7 @@ class UserCreateController(val calendarEvent: CalendarEvent, val user: User) : I
 
     public fun createUser(actionEvent: ActionEvent) {
         UserRepository.add(user)
+        calendarEvent.users.add(user)
+        Event.fireEvent(actionEvent.getTarget(), NavigateToAddUsersToEvent(calendarEvent))
     }
 }

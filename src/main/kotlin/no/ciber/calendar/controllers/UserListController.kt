@@ -1,22 +1,23 @@
 package no.ciber.calendar.controllers
 
 import javafx.beans.binding.Bindings
-import javafx.beans.property.SimpleBooleanProperty
 import javafx.collections.FXCollections
+import javafx.collections.ListChangeListener
+import javafx.collections.ObservableList
+import javafx.collections.transformation.FilteredList
 import javafx.event.ActionEvent
 import javafx.event.Event
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
 import javafx.scene.control.ListView
-import javafx.scene.control.SelectionMode
 import javafx.scene.control.cell.CheckBoxListCell
 import javafx.util.StringConverter
 import no.ciber.calendar.NavigateToCalendarEventDetails
-import no.ciber.calendar.NavigateToCalendarEventList
 import no.ciber.calendar.NavigateToCreateUser
 import no.ciber.calendar.model.CalendarEvent
 import no.ciber.calendar.model.User
 import no.ciber.calendar.repositories.UserRepository
+import no.ciber.util.liveFiltered
 import org.slf4j.LoggerFactory
 import java.net.URL
 import java.util.ResourceBundle
@@ -32,7 +33,7 @@ class UserListController(val calendarEvent: CalendarEvent) : Initializable {
 
         userListView!!.setCellFactory(CheckBoxListCell.forListView({ it.selectedProperty }, object : StringConverter<User>() {
             override fun toString(user: User?): String? {
-                return "${user?.firstname} ${user?.lastname}"
+                return "${user?.firstname} ${user?.lastname} (${user?.email})"
             }
 
             override fun fromString(string: String?): User? {
@@ -40,10 +41,12 @@ class UserListController(val calendarEvent: CalendarEvent) : Initializable {
             }
 
         }))
-        userListView!!.setItems(FXCollections.observableArrayList(UserRepository.list()))
-        userListView!!.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE)
 
-        Bindings.bindContent(calendarEvent.usersProperty, userListView!!.getSelectionModel().getSelectedItems())
+        val all = FXCollections.observableList(UserRepository.list())
+        all.filter { it in calendarEvent.users }.forEach { it.selected = true }
+        userListView!!.setItems(all)
+
+        Bindings.bindContent(calendarEvent.users, all.liveFiltered({ it.selectedProperty }, { it.selected }))
     }
 
     fun goBack(event: ActionEvent) {

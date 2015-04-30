@@ -1,7 +1,15 @@
 .root{
     -fx-background-image: url("background.jpg");
 }
-.vbox {
+.hbox {
+    -fx-end-margin: 20px ;
+}
+
+.date-picker{
+    -fx-max-width: 100px;
+}
+.time-picker{
+    -fx-max-width: 50px;
 }
 
 .label{

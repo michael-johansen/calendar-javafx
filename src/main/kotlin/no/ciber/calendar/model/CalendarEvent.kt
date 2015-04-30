@@ -37,7 +37,7 @@ class CalendarEvent {
     val startTimeProperty = SimpleObjectProperty<LocalTime>()
     val endTimeProperty = SimpleObjectProperty<LocalTime>()
     val locationProperty = SimpleObjectProperty<Location>()
-    val usersProperty: ObservableList<User> = SimpleListProperty(FXCollections.observableArrayList())
+    val usersProperty = SimpleListProperty<User>(FXCollections.observableArrayList())
 
 
     public var name: String?
@@ -62,8 +62,8 @@ class CalendarEvent {
     var location: Location?
         get() = locationProperty.getValue()
         set(value) = locationProperty.set(value)
-    val users: List<User>
-        get() = usersProperty.toList()
+    val users: MutableList<User>
+        get() = usersProperty.get()
 
     constructor() {
         /** Update DateTime when date or time changes */

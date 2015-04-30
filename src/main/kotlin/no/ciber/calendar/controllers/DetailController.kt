@@ -13,6 +13,7 @@ import no.ciber.calendar.NavigateToCalendarEventList
 import no.ciber.calendar.converters.LocationConverter
 import no.ciber.calendar.model.CalendarEvent
 import no.ciber.calendar.model.Location
+import no.ciber.calendar.model.User
 import no.ciber.calendar.repositories.CalendarEventRestRepository
 import no.ciber.calendar.repositories.LocationRepository
 import org.slf4j.LoggerFactory
@@ -30,6 +31,7 @@ class DetailController(val event: CalendarEvent) : Initializable {
     FXML var locationChoiceBox: ChoiceBox<Location>? = null
     FXML var saveButton: Button? = null
     FXML var deleteButton: Button? = null
+    FXML var userCountLabel: Label? = null
 
     override fun initialize(location: URL?, resources: ResourceBundle?) {
         logger.info("Initializing $javaClass")
@@ -38,6 +40,7 @@ class DetailController(val event: CalendarEvent) : Initializable {
         description!!.textProperty().bindBidirectional(event.descriptionProperty)
         startDate!!.valueProperty().bindBidirectional(event.startDateProperty)
         endDate!!.valueProperty().bindBidirectional(event.endDateProperty)
+        userCountLabel!!.textProperty().bind(event.usersProperty.sizeProperty().asString())
 
         locationChoiceBox!!.setConverter(LocationConverter)
         locationChoiceBox!!.setItems(FXCollections.observableArrayList(LocationRepository.list()))

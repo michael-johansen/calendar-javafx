@@ -35,4 +35,14 @@ class User {
     var selected: Boolean
         get() = selectedProperty.get()
         set(value) = selectedProperty.set(value)
+
+    override fun equals(other: Any?): Boolean {
+        return if (other === this) true
+        else if (other is User) id?.equals(other.id) ?: false
+        else false
+    }
+
+    override fun hashCode(): Int {
+        return id?.hashCode() ?: 0
+    }
 }

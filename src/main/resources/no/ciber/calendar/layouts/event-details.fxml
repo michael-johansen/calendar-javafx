@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import java.net.*?>
-<?import javafx.geometry.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.collections.ObservableList?>
-<?import javafx.scene.SubScene?>
+<?import java.net.URL?>
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="no.ciber.calendar.controllers.DetailController">
     <center>
         <VBox>
@@ -13,24 +10,34 @@
                 <Insets top="10" left="10" bottom="10" right="10"/>
             </padding>
 
-            <Label text="%details.title" />
+            <Label text="%details.title"/>
             <TextField fx:id="name"></TextField>
 
-            <Label text="%details.description" />
-            <TextArea fx:id="description" editable="true" />
+            <Label text="%details.description"/>
+            <TextArea fx:id="description" editable="true"/>
 
 
-            <Label text="%details.time" />
-            <HBox >
-                <DatePicker fx:id="startDate"></DatePicker>
-                <TextField fx:id="startTime"></TextField>
-                <Pane HBox.hgrow="ALWAYS" />
-                <DatePicker fx:id="endDate"></DatePicker>
-                <TextField fx:id="endTime"></TextField>
+            <Label text="%details.time"/>
+            <HBox>
+                <DatePicker fx:id="startDate" styleClass="date-picker"></DatePicker>
+                <TextField fx:id="startTime" styleClass="time-picker"></TextField>
+                <Pane HBox.hgrow="ALWAYS"/>
+                <DatePicker fx:id="endDate" styleClass="date-picker"></DatePicker>
+                <TextField fx:id="endTime" styleClass="time-picker"></TextField>
             </HBox>
 
-            <Label text="%details.location"></Label>
-            <ChoiceBox fx:id="locationChoiceBox"></ChoiceBox>
+            <HBox>
+                <VBox>
+                    <Label text="%details.location"></Label>
+                    <ChoiceBox fx:id="locationChoiceBox"></ChoiceBox>
+
+                </VBox>
+                <Pane HBox.hgrow="ALWAYS"/>
+                <VBox>
+                    <Label text="%details.users.count"></Label>
+                    <Label fx:id="userCountLabel"></Label>
+                </VBox>
+            </HBox>
 
             <Pane VBox.vgrow="ALWAYS"></Pane>
 
@@ -38,7 +45,7 @@
                 <Button onAction="#goBack" text="%goBack"></Button>
                 <Button onAction="#signUp" text="%details.signUp"></Button>
                 <Button onAction="#addUsers" text="%details.addUsers"></Button>
-                <Pane HBox.hgrow="ALWAYS" />
+                <Pane HBox.hgrow="ALWAYS"/>
                 <Button fx:id="saveButton" onAction="#save" text="%details.save"></Button>
                 <Button fx:id="deleteButton" onAction="#delete" text="%details.delete"></Button>
             </ToolBar>
