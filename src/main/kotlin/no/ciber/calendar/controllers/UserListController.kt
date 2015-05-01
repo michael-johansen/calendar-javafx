@@ -2,18 +2,15 @@ package no.ciber.calendar.controllers
 
 import javafx.beans.binding.Bindings
 import javafx.collections.FXCollections
-import javafx.collections.ListChangeListener
-import javafx.collections.ObservableList
-import javafx.collections.transformation.FilteredList
 import javafx.event.ActionEvent
 import javafx.event.Event
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
 import javafx.scene.control.ListView
-import javafx.scene.control.cell.CheckBoxListCell
-import javafx.util.StringConverter
+import javafx.scene.control.SelectionMode
 import no.ciber.calendar.NavigateToCalendarEventDetails
 import no.ciber.calendar.NavigateToCreateUser
+import no.ciber.calendar.components.SelectableImageListCell
 import no.ciber.calendar.model.CalendarEvent
 import no.ciber.calendar.model.User
 import no.ciber.calendar.repositories.UserRepository
@@ -31,16 +28,18 @@ class UserListController(val calendarEvent: CalendarEvent) : Initializable {
     override fun initialize(location: URL?, resources: ResourceBundle?) {
         logger.info("Initializing $javaClass")
 
-        userListView!!.setCellFactory(CheckBoxListCell.forListView({ it.selectedProperty }, object : StringConverter<User>() {
-            override fun toString(user: User?): String? {
-                return "${user?.firstname} ${user?.lastname} (${user?.email})"
-            }
-
-            override fun fromString(string: String?): User? {
-                throw UnsupportedOperationException()
-            }
-
-        }))
+        userListView!!.setCellFactory {
+            it: ListView<User> ->
+            SelectableImageListCell<User>({
+                Bindings.concat(it.gravatarUrlProperty, "?s=64")
+            }, {
+                it.selectedProperty
+            }, {
+                Bindings.concat(it.firstnameProperty," ", it.lastnameProperty, " (", it.emailProperty, ")")
+            })
+        }
+        userListView!!.setItems(FXCollections.observableArrayList(UserRepository.list()))
+        userListView!!.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE)
 
         val all = FXCollections.observableList(UserRepository.list())
         all.filter { it in calendarEvent.users }.forEach { it.selected = true }
