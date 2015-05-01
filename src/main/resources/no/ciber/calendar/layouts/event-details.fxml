@@ -29,8 +29,10 @@
             <HBox>
                 <VBox>
                     <Label text="%details.location"></Label>
-                    <ChoiceBox fx:id="locationChoiceBox"></ChoiceBox>
-
+                    <HBox>
+                        <ChoiceBox fx:id="locationChoiceBox"></ChoiceBox>
+                        <Button onAction="#addNewLocation" text="%location.create"></Button>
+                    </HBox>
                 </VBox>
                 <Pane HBox.hgrow="ALWAYS"/>
                 <VBox>

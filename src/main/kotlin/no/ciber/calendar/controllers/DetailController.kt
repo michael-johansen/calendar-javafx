@@ -3,13 +3,17 @@ package no.ciber.calendar.controllers
 import javafx.beans.binding.BooleanBinding
 import javafx.collections.FXCollections
 import javafx.concurrent.Task
+import javafx.event.ActionEvent
 import javafx.event.Event
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
 import javafx.scene.control.*
+import javafx.scene.web.WebView
 import javafx.util.converter.LocalTimeStringConverter
 import no.ciber.calendar.NavigateToAddUsersToEvent
 import no.ciber.calendar.NavigateToCalendarEventList
+import no.ciber.calendar.NavigateToCreateLocation
+import no.ciber.calendar.NavigateToLocationEvent
 import no.ciber.calendar.converters.LocationConverter
 import no.ciber.calendar.model.CalendarEvent
 import no.ciber.calendar.model.Location
@@ -98,5 +102,9 @@ class DetailController(val event: CalendarEvent) : Initializable {
 
     fun addUsers(event: Event){
         Event.fireEvent(event.getTarget(), NavigateToAddUsersToEvent(this.event))
+    }
+
+    fun addNewLocation(event: ActionEvent){
+        Event.fireEvent(event.getTarget(), NavigateToCreateLocation(this.event))
     }
 }

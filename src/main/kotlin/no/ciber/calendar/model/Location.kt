@@ -21,18 +21,18 @@ class Location() {
     var id: String?
         get() = idProperty.get()
         set(value) = idProperty.set(value)
-    var location: String
+    var location: String?
         get() = locationProperty.get()
         set(value) = locationProperty.set(value)
-    var description: String
+    var description: String?
         get() = descriptionProperty.get()
         set(value) = descriptionProperty.set(value)
-    var latitude: Double
+    var latitude: Double?
         get() = latitudeProperty.get()
-        set(value) = latitudeProperty.set(value)
-    var longitude: Double
+        set(value) = latitudeProperty.set(value?:0.0)
+    var longitude: Double?
         get() = longitudeProperty.get()
-        set(value) = longitudeProperty.set(value)
+        set(value) = longitudeProperty.set(value?:0.0)
 
     override fun equals(other: Any?): Boolean {
         return if (other === this) true

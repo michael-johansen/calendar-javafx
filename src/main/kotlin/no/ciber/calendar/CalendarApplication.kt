@@ -54,10 +54,11 @@ class CalendarApplication : Application() {
     private fun applicationEventHandler(): (Event) -> Unit {
         return { event ->
             when (event) {
-                is NavigateToCalendarEventDetails -> gotoView(fxml = event.location, arguments = event.calendarEvent)
-                is NavigateToCalendarEventList -> gotoView(fxml = event.location, arguments = * array(locale, event.searchMode))
-                is NavigateToAddUsersToEvent -> gotoView(fxml = event.location, arguments = event.calendarEvent)
-                is NavigateToCreateUser -> gotoView(fxml = event.location, arguments = * array(event.calendarEvent, event.user))
+                is NavigateToCalendarEventDetails -> gotoView(fxml = event.layoutLocation, arguments = event.calendarEvent)
+                is NavigateToCalendarEventList -> gotoView(fxml = event.layoutLocation, arguments = * array(locale, event.searchMode))
+                is NavigateToAddUsersToEvent -> gotoView(fxml = event.layoutLocation, arguments = event.calendarEvent)
+                is NavigateToCreateUser -> gotoView(fxml = event.layoutLocation, arguments = * array(event.calendarEvent, event.user))
+                is NavigateToCreateLocation -> gotoView(fxml = event.layoutLocation, arguments = * array(event.calendarEvent, event.location))
                 is ChangeLocale -> {
                     logger.info("Changing locale from $locale to ${event.locale}")
                     locale = event.locale
