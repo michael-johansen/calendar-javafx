@@ -11,4 +11,8 @@ object LocationRepository : RestRepository() {
     fun list(): List<Location> {
         return get("${Settings.eventServiceUrl}/locations", javaClass<Array<Location>>()).toList()
     }
+
+    fun create(location: Location) {
+        post("${Settings.eventServiceUrl}/locations", location)
+    }
 }

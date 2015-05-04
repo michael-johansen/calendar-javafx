@@ -8,7 +8,7 @@
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.web.WebView?>
 <VBox xmlns:fx="http://javafx.com/fxml" styleClass="root"
-      fx:controller="no.ciber.calendar.controllers.LocationCreateController">
+      fx:controller="no.ciber.calendar.controllers.CreateLocationController">
 
     <padding>
         <Insets top="10" left="10" bottom="10" right="10"/>
@@ -20,12 +20,23 @@
     <Label text="%location.description"></Label>
     <TextField fx:id="descriptionTextField"></TextField>
 
-    <WebView fx:id="mapWebView"></WebView>
+    <HBox>
+        <Label text="%location.longitude" />
+        <Pane HBox.hgrow="ALWAYS" />
+        <Label fx:id="longitudeLabel" />
+    </HBox>
+    <HBox>
+        <Label text="%location.latitude" />
+        <Pane HBox.hgrow="ALWAYS" />
+        <Label fx:id="latitudeLabel" />
+    </HBox>
+
+    <WebView fx:id="mapWebView" onMouseClicked="#updateCoordinates"></WebView>
 
     <ToolBar>
         <Button onAction="#goBack" text="%goBack" />
         <Pane HBox.hgrow="ALWAYS" />
-        <Button onAction="#createLocation" text="%user.create" />
+        <Button onAction="#createLocation" text="%location.create" />
     </ToolBar>
 
     <stylesheets>
