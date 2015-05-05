@@ -50,20 +50,24 @@
 
             google.maps.event.addListener(map, "click", function (event) {
                 log("Moving marker")
-                updateMarker(event.latLng)
+                var latLng = event.latLng;
+                updateMarker(latLng)
 
-                fxLocation.setLatitude(event.latLng.lat());
-                fxLocation.setLongitude(event.latLng.lng());
+                if (fxLocation) {
+                    fxLocation.setLatitude(latLng.lat());
+                    fxLocation.setLongitude(latLng.lng());
 
-                geocoder.geocode({
-                    "location": new google.maps.LatLng(event.latLng.lat(), event.latLng.lng())
-                }, function (results, status) {
-                    if (status == google.maps.GeocoderStatus.OK) {
-                        fxLocation.setLocation(results[0] ? results[0].formatted_address : "Unknown");
-                    } else {
-                        alert('Geocoder failed due to: ' + status);
-                    }
-                });
+                    geocoder.geocode({
+                        "location": new google.maps.LatLng(latLng.lat(), latLng.lng())
+                    }, function (results, status) {
+                        if (status == google.maps.GeocoderStatus.OK) {
+                            fxLocation.setLocation(results[0] ? results[0].formatted_address : "Unknown");
+                        } else {
+                            alert('Geocoder failed due to: ' + status);
+                        }
+                    })
+                }
+                ;
 
             });
         }
