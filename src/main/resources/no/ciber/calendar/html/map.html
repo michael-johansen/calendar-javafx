@@ -17,45 +17,54 @@
             background-color: #666970;
         }
     </style>
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js">
-    </script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3"></script>
     <script type="text/javascript">
+        function log(message) {
+            if (console && console.log) console.log(message)
+        }
+
         function initialize() {
-            var latLng = new google.maps.LatLng(60, 11);
-            var myOptions = {
+            log("Initializing")
+
+            var markerPosition = new google.maps.LatLng(60, 11);
+            var geocoder = new google.maps.Geocoder();
+            var map = new google.maps.Map(document.getElementById("map_canvas"), {
                 zoom: 11,
-                center: latLng,
-                mapTypeId: google.maps.MapTypeId.ROADMAP,
-                mapTypeControl: false,
-                navigationControl: false,
-                streetViewControl: false,
-                backgroundColor: "#666970"
-            };
+                center: markerPosition,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            });
+            var marker = new google.maps.Marker({
+                position: markerPosition,
+                map: map
+            })
 
-            document.geocoder = new google.maps.Geocoder();
-            document.map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-
-            var location = "Unknown";
-            document.getCoordinates = function () {
-                return {
-                    "longitude": latLng.lng(),
-                    "latitude": latLng.lat(),
-                    "location": location
-                };
+            function updateMarker(position) {
+                marker.setMap(null);
+                // Do this with delay since webView issues with redrawing.
+                setTimeout(function () {
+                    marker.setMap(map);
+                    marker.setPosition(position);
+                    map.panTo(position);
+                }, 200);
             }
 
-            google.maps.event.addListener(document.map, "click", function (event) {
-                latLng = new google.maps.LatLng(event.latLng.lat(), event.latLng.lng())
+            google.maps.event.addListener(map, "click", function (event) {
+                log("Moving marker")
+                updateMarker(event.latLng)
 
-                document.geocoder.geocode({
-                    "location": latLng
+                fxLocation.setLatitude(event.latLng.lat());
+                fxLocation.setLongitude(event.latLng.lng());
+
+                geocoder.geocode({
+                    "location": new google.maps.LatLng(event.latLng.lat(), event.latLng.lng())
                 }, function (results, status) {
                     if (status == google.maps.GeocoderStatus.OK) {
-                        location = results[0] ? results[0].formatted_address : "Unknown";
+                        fxLocation.setLocation(results[0] ? results[0].formatted_address : "Unknown");
                     } else {
                         alert('Geocoder failed due to: ' + status);
                     }
                 });
+
             });
         }
         google.maps.event.addDomListener(window, 'load', initialize);

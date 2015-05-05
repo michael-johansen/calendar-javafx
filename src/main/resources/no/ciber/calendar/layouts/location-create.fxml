@@ -31,7 +31,7 @@
         <Label fx:id="latitudeLabel" />
     </HBox>
 
-    <WebView fx:id="mapWebView" onMouseClicked="#updateCoordinates"></WebView>
+    <WebView fx:id="mapWebView"></WebView>
 
     <ToolBar>
         <Button onAction="#goBack" text="%goBack" />
