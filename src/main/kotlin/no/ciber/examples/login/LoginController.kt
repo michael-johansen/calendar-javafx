@@ -9,7 +9,7 @@ class LoginController {
     private var actiontarget: Text? = null
 
     [FXML]
-    protected fun handleSubmitButtonAction(event: ActionEvent) {
+    protected fun handleSubmitButtonAction() {
         actiontarget?.setText("Sign in button pressed")
     }
 }

@@ -27,7 +27,7 @@ class User {
     var gravatarUrlProperty: StringProperty = SimpleStringProperty()
 
     constructor() {
-        emailProperty.addListener {(observableValue, oldValue, newValue) ->
+        emailProperty.addListener { observableValue, oldValue, newValue ->
             val bytes = (email ?: "").trim().toLowerCase().toByteArray("UTF-8")
             val digest = MessageDigest.getInstance("MD5").digest(bytes)
             val hash = BigInteger(1, digest).toString(16)

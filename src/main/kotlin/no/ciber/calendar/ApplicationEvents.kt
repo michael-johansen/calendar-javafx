@@ -13,5 +13,7 @@ class NavigateToCalendarEventList(val searchMode: SearchMode = SearchMode.All) :
 class NavigateToAddUsersToEvent(val calendarEvent: CalendarEvent) : NavigateToLocationEvent("layouts/user-list.fxml")
 class NavigateToCreateUser(val calendarEvent: CalendarEvent, val user: User = User()) : NavigateToLocationEvent("layouts/user-create.fxml")
 class NavigateToCreateLocation(val calendarEvent: CalendarEvent, val location: Location = Location()) : NavigateToLocationEvent("layouts/location-create.fxml")
+class NavigateToLogin() : NavigateToLocationEvent("layouts/login.fxml")
 
+class UserAuthenticated(token:String) : Event(Event.ANY)
 class ChangeLocale(val locale: Locale) : Event(Event.ANY)

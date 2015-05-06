@@ -44,7 +44,7 @@ public class CreateLocationController(val event: CalendarEvent, val location: Lo
         val webEngine = mapWebView!!.getEngine()
         webEngine.getLoadWorker().exceptionProperty().addListener({ it: Observable -> logger.info("${it}") })
         webEngine.setOnError { it.getException().printStackTrace() }
-        webEngine.getLoadWorker().stateProperty().addListener {(observableValue, from, to) ->
+        webEngine.getLoadWorker().stateProperty().addListener { observableValue, from, to ->
             if (to.equals(Worker.State.SUCCEEDED)) {
                 val window = webEngine.executeScript("window") as JSObject
                 window.setMember("fxLocation", LocationBridge(location))

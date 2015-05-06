@@ -28,13 +28,13 @@ public class SelectableImageListCell<T>(
     val label: Label = Label()
     val group = HBox()
 
-    override fun updateItem(item: T?, empty: Boolean) {
+    override fun updateItem(item: T, empty: Boolean) {
         super.updateItem(item, empty)
         if (empty) {
             setGraphic(null);
         } else {
             checkbox.selectedProperty().bindBidirectional(selected.invoke(item!!))
-            image.setImage(Image(url.invoke(item!!).getValue()))
+            image.setImage(Image(url.invoke(item).getValue()))
             label.textProperty().bind(text.invoke(item))
             group.getChildren().clear()
             group.getChildren().addAll(array(checkbox, label, createFillPane(), image))

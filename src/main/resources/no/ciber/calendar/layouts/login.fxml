@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.collections.ObservableList?>
+<?import javafx.scene.web.WebView?>
+<VBox xmlns:fx="http://javafx.com/fxml" styleClass="root"
+      fx:controller="no.ciber.calendar.controllers.LoginController">
+
+    <padding>
+        <Insets top="10" left="10" bottom="10" right="10"/>
+    </padding>
+
+    <WebView fx:id="loginWebView"></WebView>
+
+    <stylesheets>
+        <URL value="@../calendar.css"/>
+    </stylesheets>
+</VBox>
+
+
+

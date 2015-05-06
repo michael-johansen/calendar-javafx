@@ -11,7 +11,7 @@ public fun <E, S : ObservableValue<*>> ObservableList<E>.liveFiltered(accessor: 
         accessor.invoke(it)
     }.forEach {
         it.addListener {
-            (o, v1, v2) -> filteredList.setPredicate(predicate)
+            o, v1, v2 -> filteredList.setPredicate(predicate)
         }
     }
     return filteredList

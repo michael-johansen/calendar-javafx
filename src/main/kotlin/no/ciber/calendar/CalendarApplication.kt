@@ -10,6 +10,7 @@ import javafx.scene.Parent
 import javafx.scene.Scene
 import javafx.scene.control.Label
 import javafx.stage.Stage
+import no.ciber.calendar.model.SearchMode
 import org.slf4j.LoggerFactory
 import java.net.URL
 import java.util.Locale
@@ -17,7 +18,7 @@ import java.util.ResourceBundle
 
 class CalendarApplication : Application() {
     val logger = LoggerFactory.getLogger(javaClass)
-    val scene = Scene(Group(Label("loading")), 400.0, 400.0)
+    val scene = Scene(Group(Label("loading")), 600.0, 800.0)
     var locale = Locale.ENGLISH;
 
     override fun start(primaryStage: Stage) {
@@ -27,10 +28,10 @@ class CalendarApplication : Application() {
         primaryStage.show()
 
         logger.info("Navigating to event list")
-        primaryStage.fireEvent(NavigateToCalendarEventList())
+        primaryStage.fireEvent(NavigateToLogin())
     }
 
-    fun gotoView(fxml: String, vararg arguments:Any) {
+    fun gotoView(fxml: String, vararg arguments: Any) {
         logger.info("Navigating to view $fxml, with arguments: ${arguments.toList()}")
         fun defaultControllerFactory(clazz: Class<*>): Any {
             logger.info("Initializing controller $clazz with ${arguments.toList()}")
@@ -54,6 +55,8 @@ class CalendarApplication : Application() {
     private fun applicationEventHandler(): (Event) -> Unit {
         return { event ->
             when (event) {
+                is NavigateToLogin -> gotoView(fxml = event.layoutLocation)
+                is UserAuthenticated -> Event.fireEvent(scene, NavigateToCalendarEventList(SearchMode.All))
                 is NavigateToCalendarEventDetails -> gotoView(fxml = event.layoutLocation, arguments = event.calendarEvent)
                 is NavigateToCalendarEventList -> gotoView(fxml = event.layoutLocation, arguments = * array(locale, event.searchMode))
                 is NavigateToAddUsersToEvent -> gotoView(fxml = event.layoutLocation, arguments = event.calendarEvent)
@@ -63,6 +66,7 @@ class CalendarApplication : Application() {
                     logger.info("Changing locale from $locale to ${event.locale}")
                     locale = event.locale
                 }
+
             }
         }
     }
