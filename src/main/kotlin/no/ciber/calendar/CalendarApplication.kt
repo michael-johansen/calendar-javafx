@@ -2,6 +2,7 @@ package no.ciber.calendar
 
 import javafx.application.Application
 import javafx.application.Platform
+import javafx.beans.property.SimpleObjectProperty
 import javafx.event.Event
 import javafx.fxml.FXMLLoader
 import javafx.fxml.JavaFXBuilderFactory
@@ -11,6 +12,7 @@ import javafx.scene.Scene
 import javafx.scene.control.Label
 import javafx.scene.layout.BorderPane
 import javafx.stage.Stage
+import no.ciber.calendar.model.AuthenticatedData
 import no.ciber.calendar.model.SearchMode
 import org.slf4j.LoggerFactory
 import java.net.URL
@@ -22,6 +24,7 @@ class CalendarApplication : Application() {
     val scene = Scene(Group(Label("loading")), 600.0, 800.0)
     var frame: BorderPane = BorderPane()
     var locale = Locale.ENGLISH;
+    var credentialsProperty = SimpleObjectProperty<AuthenticatedData>(null)
 
     override fun start(primaryStage: Stage) {
         logger.info("Starting application")
@@ -30,7 +33,7 @@ class CalendarApplication : Application() {
         primaryStage.show()
 
         Platform.runLater({
-            val frame = loadParent("layouts/frame.fxml") as BorderPane
+            val frame = loadParent("layouts/frame.fxml", credentialsProperty) as BorderPane
             this.frame = frame
             scene.setRoot(frame)
 
@@ -71,7 +74,10 @@ class CalendarApplication : Application() {
         return { event ->
             when (event) {
                 is NavigateToLogin -> gotoView(fxml = event.layoutLocation)
-                is UserAuthenticated -> Event.fireEvent(scene, NavigateToCalendarEventList(SearchMode.All))
+                is UserAuthenticated ->{
+                    credentialsProperty.set(event.authentication)
+                    Event.fireEvent(scene, NavigateToCalendarEventList(SearchMode.All))
+                }
                 is NavigateToCalendarEventDetails -> gotoView(fxml = event.layoutLocation, arguments = event.calendarEvent)
                 is NavigateToCalendarEventList -> gotoView(fxml = event.layoutLocation, arguments = * array(locale, event.searchMode))
                 is NavigateToAddUsersToEvent -> gotoView(fxml = event.layoutLocation, arguments = event.calendarEvent)

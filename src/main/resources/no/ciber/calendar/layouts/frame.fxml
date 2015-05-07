@@ -6,8 +6,7 @@
 <?import javafx.scene.text.*?>
 <?import javafx.collections.ObservableList?>
 <?import javafx.scene.image.ImageView?>
-<BorderPane xmlns:fx="http://javafx.com/fxml" styleClass="root" fx:controller="no.ciber.calendar.controllers.FrameController"
-        width="600" height="800">
+<BorderPane xmlns:fx="http://javafx.com/fxml" styleClass="root" fx:controller="no.ciber.calendar.controllers.FrameController">
 
     <padding>
         <Insets top="10" left="10" bottom="10" right="10"/>
@@ -15,7 +14,7 @@
 
     <top>
         <ToolBar>
-            <TextField fx:id="navigateionTextField"></TextField>
+            <TextField fx:id="navigationTextField"></TextField>
             <Pane HBox.hgrow="ALWAYS" />
             <Label fx:id="userLabel"></Label>
             <ImageView fx:id="userImageView"></ImageView>

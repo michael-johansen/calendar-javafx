@@ -12,5 +12,5 @@ class NavigateToCreateUser(val calendarEvent: CalendarEvent, val user: User = Us
 class NavigateToCreateLocation(val calendarEvent: CalendarEvent, val location: Location = Location()) : NavigateToLocationEvent("layouts/location-create.fxml")
 class NavigateToLogin() : NavigateToLocationEvent("layouts/login.fxml")
 
-class UserAuthenticated(val token: AuthenticatedData) : Event(Event.ANY)
+class UserAuthenticated(val authentication: AuthenticatedData) : Event(Event.ANY)
 class ChangeLocale(val locale: Locale) : Event(Event.ANY)
