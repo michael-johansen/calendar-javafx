@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.collections.ObservableList?>
+<?import javafx.scene.image.ImageView?>
+<BorderPane xmlns:fx="http://javafx.com/fxml" styleClass="root" fx:controller="no.ciber.calendar.controllers.FrameController"
+        width="600" height="800">
+
+    <padding>
+        <Insets top="10" left="10" bottom="10" right="10"/>
+    </padding>
+
+    <top>
+        <ToolBar>
+            <TextField fx:id="navigateionTextField"></TextField>
+            <Pane HBox.hgrow="ALWAYS" />
+            <Label fx:id="userLabel"></Label>
+            <ImageView fx:id="userImageView"></ImageView>
+        </ToolBar>
+    </top>
+    <center>
+
+    </center>
+    <bottom>
+
+    </bottom>
+
+    <stylesheets>
+        <URL value="@../calendar.css"/>
+    </stylesheets>
+</BorderPane>
