@@ -1,26 +1,27 @@
 package no.ciber.calendar.controllers
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.mashape.unirest.http.Unirest
+import javafx.application.Platform
+import javafx.beans.value.ChangeListener
+import javafx.beans.value.ObservableValue
 import javafx.event.Event
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
+import javafx.scene.Node
 import javafx.scene.web.WebView
 import no.ciber.calendar.Settings
 import no.ciber.calendar.UserAuthenticated
+import no.ciber.calendar.model.AuthenticatedData
 import no.ciber.util.URLBuilder
 import org.slf4j.LoggerFactory
 import org.w3c.dom.Document
 import sun.plugin.dom.exception.InvalidStateException
+import java.io.File
 import java.math.BigInteger
-
 import java.net.URL
-import java.net.URLEncoder
 import java.security.SecureRandom
 import java.util.ResourceBundle
-import java.util.StringTokenizer
-import java.util.UUID
-import java.util.regex.Pattern
-import kotlin.browser.document
 
 /**
  * Created by Michael on 06.05.2015.
@@ -30,58 +31,57 @@ public class LoginController : Initializable {
     FXML var loginWebView: WebView? = null
 
     override fun initialize(location: URL, resources: ResourceBundle) {
+        if (!logInWithRefreshToken()) {
+            logInWithWebView()
+        }
+    }
+
+    private fun logInWithWebView() {
         val webEngine = loginWebView!!.getEngine()
+        logger.info("Creating webView to attempt authentication.")
+
         val csrf = createCSRFToken()
-
-        webEngine.documentProperty().addListener({ obs, oldValue, newValue ->
-            val parameters = getParameters(newValue)
-            if (parameters.containsKey("state") && parameters.containsKey("code")) {
-                verifyCSRF(csrf, parameters.get("state"))
-                verifyCode(parameters.get("code"))
-            } else {
-                logger.info("User is not yet logged in. Waiting.")
-            }
-        })
-
-
+        webEngine.documentProperty().addListener(LoginChangeListener(csrf, loginWebView!!))
         webEngine.load(generateLoginUrl(csrf))
     }
 
-    private fun verifyCSRF(csrf: String, state: String?) {
-        logger.info("Checking csrf")
-        if (!csrf.equals(state)) throw InvalidStateException("CSRF mismatch")
+    private fun logInWithRefreshToken(): Boolean {
+        val refreshToken = getRefreshToken()
+        if (refreshToken != null) {
+            logger.info("Found refresh token ${refreshToken} attempting login.")
+            val data = refreshAuthorizationData(refreshToken)
+            if (data != null) {
+                Platform.runLater({
+                    Event.fireEvent(loginWebView, UserAuthenticated(data))
+                })
+                return true
+            }
+        }
+        return false
     }
 
-    private fun verifyCode(code: String?) {
-        val json = Unirest.post(Settings.oauthVerifyLoginUrl())
-                .field("code", code!!)
+    private fun getRefreshToken(): String? {
+        val path = System.getProperty("java.io.tmpdir");
+        val list = File(path)
+                .listFiles({ file, name -> name.matches("""^calendar-javafx-refresh-\w+\.json$""") })
+                .sortBy(comparator { left, right -> (left.lastModified() - right.lastModified()).toInt() })
+        list.drop(1).forEach { it.delete() }
+        return list.firstOrNull()?.readText("UTF-8")
+    }
+
+    private fun refreshAuthorizationData(refreshToken: String?): AuthenticatedData? {
+        val response = Unirest.post(Settings.oauthVerifyLoginUrl())
                 .field("client_id", Settings.oauthClientId())
                 .field("client_secret", Settings.oauthClientSecret())
-                .field("redirect_uri", Settings.oauthRedirectUri())
-                .field("grant_type", "authorization_code")
-                .asJson()
-        logger.info("Response: $json")
-
-        val accessToken = json
+                .field("refresh_token", refreshToken)
+                .field("grant_type", "refresh_token")
+                .asString()
+        if (!response.getStatus().equals(200)) return null;
+        val json = response
                 .getBody()
-                .getObject()
-                .get("access_token")
-                .toString()
-
-        Event.fireEvent(loginWebView, UserAuthenticated(accessToken))
+        return ObjectMapper().readValue(json, javaClass<AuthenticatedData>())
     }
 
-    private fun getParameters(document: Document?): Map<String, String> {
-        val content = document?.getElementsByTagName("title")?.item(0)?.getTextContent() ?: ""
-        if (content.startsWith("Success ")) {
-            return content.replaceFirst("^Success ", "")
-                    .split("&")
-                    .toMap { it.replaceFirst("""=.*$""", "") }
-                    .mapValues { it.getValue().replaceFirst("""^\w+=""", "") }
-        }
-
-        return emptyMap()
-    }
 
     private fun generateLoginUrl(csrf: String): String {
         val url = URLBuilder(Settings.oauthLoginUrl())
@@ -91,7 +91,7 @@ public class LoginController : Initializable {
                 .with("scope", Settings.oauthScope())
                 .with("state", csrf)
                 .with("login_hint", hintEmail())
-                .with("include_granted_scopes", false).toString()
+                .with("include_granted_scopes", true).toString()
 
         logger.info("Generated login url: $url")
         return url
@@ -108,5 +108,4 @@ public class LoginController : Initializable {
 
 
 }
-
 

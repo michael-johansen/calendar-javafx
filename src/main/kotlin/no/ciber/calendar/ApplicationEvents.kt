@@ -1,10 +1,7 @@
 package no.ciber.calendar
 
 import javafx.event.Event
-import no.ciber.calendar.model.CalendarEvent
-import no.ciber.calendar.model.Location
-import no.ciber.calendar.model.SearchMode
-import no.ciber.calendar.model.User
+import no.ciber.calendar.model.*
 import java.util.Locale
 
 open class NavigateToLocationEvent(val layoutLocation: String) : Event(Event.ANY)
@@ -15,5 +12,5 @@ class NavigateToCreateUser(val calendarEvent: CalendarEvent, val user: User = Us
 class NavigateToCreateLocation(val calendarEvent: CalendarEvent, val location: Location = Location()) : NavigateToLocationEvent("layouts/location-create.fxml")
 class NavigateToLogin() : NavigateToLocationEvent("layouts/login.fxml")
 
-class UserAuthenticated(token:String) : Event(Event.ANY)
+class UserAuthenticated(val token: AuthenticatedData) : Event(Event.ANY)
 class ChangeLocale(val locale: Locale) : Event(Event.ANY)
