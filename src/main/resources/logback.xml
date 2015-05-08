@@ -1,0 +1,24 @@
+<configuration>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%-5level %d %logger{40} {{ '{%X}' }} %msg%n</pattern>
+        </layout>>
+    </appender>
+
+    <appender name="GRAYLOG2" class="com.github.pukkaone.gelf.logback.GelfAppender">
+        <graylogHost>tcp:${GRAYLOG_HOST}</graylogHost>
+        <graylogPort>${GRAYLOG_PORT}</graylogPort>
+        <originHost>calendar-javafx</originHost>
+    </appender>
+
+    <logger name="org.springframework.core.env.PropertySourcesPropertyResolver" level="WARN"></logger>
+    <logger name="org.springframework.core.env.MutablePropertySources" level="WARN"></logger>
+    <logger name="org.hibernate.type.BasicTypeRegistry" level="WARN"></logger>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="GRAYLOG2"/>
+    </root>
+
+</configuration>
