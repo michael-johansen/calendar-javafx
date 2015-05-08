@@ -14,7 +14,7 @@
 
     <top>
         <ToolBar>
-            <TextField fx:id="navigationTextField"></TextField>
+            <TextField fx:id="navigationTextField" visible="false"></TextField>
             <Pane HBox.hgrow="ALWAYS" />
             <Label fx:id="userLabel"></Label>
             <ImageView fx:id="userImageView"></ImageView>

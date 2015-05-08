@@ -14,6 +14,7 @@ import javafx.scene.layout.BorderPane
 import javafx.stage.Stage
 import no.ciber.calendar.model.AuthenticatedData
 import no.ciber.calendar.model.SearchMode
+import no.ciber.calendar.repositories.UserRepository
 import org.slf4j.LoggerFactory
 import java.net.URL
 import java.util.Locale
@@ -75,7 +76,7 @@ class CalendarApplication : Application() {
             when (event) {
                 is NavigateToLogin -> gotoView(fxml = event.layoutLocation)
                 is UserAuthenticated ->{
-                    credentialsProperty.set(event.authentication)
+                    UserService.credentialsProperty.set(event.authentication)
                     Event.fireEvent(scene, NavigateToCalendarEventList(SearchMode.All))
                 }
                 is NavigateToCalendarEventDetails -> gotoView(fxml = event.layoutLocation, arguments = event.calendarEvent)

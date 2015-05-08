@@ -1,5 +1,6 @@
 package no.ciber.calendar.controllers
 
+import com.mashape.unirest.http.Unirest
 import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.value.ChangeListener
 import javafx.fxml.FXML
@@ -8,7 +9,11 @@ import javafx.scene.control.Label
 import javafx.scene.control.TextField
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
+import no.ciber.calendar.UserService
 import no.ciber.calendar.model.AuthenticatedData
+import no.ciber.calendar.repositories.UserRepository
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 import java.net.URL
 import java.util.ResourceBundle
@@ -24,10 +29,7 @@ public class FrameController(val credentials: SimpleObjectProperty<Authenticated
     FXML public var userImageView: ImageView? = null
 
     override fun initialize(location: URL, resources: ResourceBundle) {
-        credentials.addListener { observableValue, v1, v2 ->
-            if (v2 != null) {
-                userImageView!!.setImage(Image("https://www.googleapis.com/plus/v1/people/me?access_token=${v2.accessToken}"))
-            }
-        }
+        userLabel!!.textProperty().bind(UserService.displayNameProperty)
+        userImageView!!.imageProperty().bind(UserService.userImageProperty)
     }
 }
