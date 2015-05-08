@@ -9,29 +9,28 @@ import org.junit.Test
 class JsonTest{
     val json =
 """{
-    "id": 1,
-    "createdDate": "2015-03-25T15:52:26Z",
-    "startDate": "2015-03-25T15:47:30Z",
-    "endDate": "2015-03-26T17:47:00Z",
-    "name": "Partytime",
-    "description": "The greatest party in the history of mankind!",
-    "users": [
-        {
-            "id": 1,
-            "email": "a@b.c",
-            "firstname": "Tester",
-            "lastname": "Abcd"
-        }
-    ],
-    "location": {
-        "id": 1,
-        "description": "Fotballkamp",
-        "location": "Molde",
-        "latitude": 62.73379,
-        "longitude": 7.14795
-    }
+"id": 1,
+"createdDate": 1430299393209,
+"startDate": 1430297862045,
+"endDate": 1430297862045,
+"name": "Partytime",
+"description": "The greatest party in the history of mankind!",
+"users": [
+{
+"id": 8,
+"email": "mm@ciber.com",
+"firstname": "Mihaela",
+"lastname": "MM"
 }
-"""
+],
+"location": {
+"id": 7,
+"description": "heyhoo",
+"location": "roma",
+"latitude": 62.73379,
+"longitude": 17.14795
+}
+}"""
 
     Test fun canParseJson(){
         val mapper = ObjectMapper()
