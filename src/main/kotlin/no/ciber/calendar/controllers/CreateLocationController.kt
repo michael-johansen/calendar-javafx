@@ -52,7 +52,7 @@ public class CreateLocationController(val event: CalendarEvent, val location: Lo
                 webEngine.executeScript("console.log = function(message){javaLogger.log(message);};")
             }
         }
-        webEngine.load(javaClass.getResource("../html/map.html").toExternalForm())
+        webEngine.load(javaClass.getClassLoader().getResource("html/map.html").toExternalForm())
     }
 
     fun goBack(actionEvent: ActionEvent) {

@@ -68,7 +68,7 @@ class CalendarApplication : Application() {
 
 
     private fun getRequiredResource(fxml: String): URL {
-        return javaClass<CalendarApplication>().getResource(fxml)!!
+        return javaClass<CalendarApplication>().getClassLoader().getResource(fxml)!!
     }
 
     private fun applicationEventHandler(): (Event) -> Unit {
