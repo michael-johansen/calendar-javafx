@@ -25,10 +25,10 @@ class LoginChangeListener : ChangeListener<Document> {
     private fun getParameters(document: Document?): Map<String, String> {
         val content = document?.getElementsByTagName("title")?.item(0)?.getTextContent() ?: ""
         if (content.startsWith("Success ")) {
-            return content.replaceFirst("^Success ", "")
-                    .split("&")
-                    .toMap { it.replaceFirst("""=.*$""", "") }
-                    .mapValues { it.getValue().replaceFirst("""^\w+=""", "") }
+            return content.replaceFirst("^Success ".toRegex(), "")
+                    .splitBy("&")
+                    .toMap { it.replaceFirst("""=.*$""".toRegex(), "") }
+                    .mapValues { it.getValue().replaceFirst("""^\w+=""".toRegex(), "") }
         }
 
         return emptyMap()

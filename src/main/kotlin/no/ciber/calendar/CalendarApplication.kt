@@ -53,7 +53,7 @@ class CalendarApplication : Application() {
         logger.info("Navigating to view $fxml, with arguments: ${arguments.toList()}")
         fun defaultControllerFactory(clazz: Class<*>): Any {
             logger.info("Initializing controller $clazz with ${arguments.toList()}")
-            val argumentTypes = arguments.map { it.javaClass }.copyToArray()
+            val argumentTypes = arguments.map { it.javaClass }.toTypedArray()
             return clazz.getConstructor(* argumentTypes).newInstance(* arguments)!!
         }
 
@@ -80,10 +80,10 @@ class CalendarApplication : Application() {
                     Event.fireEvent(scene, NavigateToCalendarEventList(SearchMode.All))
                 }
                 is NavigateToCalendarEventDetails -> gotoView(fxml = event.layoutLocation, arguments = event.calendarEvent)
-                is NavigateToCalendarEventList -> gotoView(fxml = event.layoutLocation, arguments = * array(locale, event.searchMode))
+                is NavigateToCalendarEventList -> gotoView(fxml = event.layoutLocation, arguments = * arrayOf(locale, event.searchMode))
                 is NavigateToAddUsersToEvent -> gotoView(fxml = event.layoutLocation, arguments = event.calendarEvent)
-                is NavigateToCreateUser -> gotoView(fxml = event.layoutLocation, arguments = * array(event.calendarEvent, event.user))
-                is NavigateToCreateLocation -> gotoView(fxml = event.layoutLocation, arguments = * array(event.calendarEvent, event.location))
+                is NavigateToCreateUser -> gotoView(fxml = event.layoutLocation, arguments = * arrayOf(event.calendarEvent, event.user))
+                is NavigateToCreateLocation -> gotoView(fxml = event.layoutLocation, arguments = * arrayOf(event.calendarEvent, event.location))
                 is ChangeLocale -> {
                     logger.info("Changing locale from $locale to ${event.locale}")
                     locale = event.locale
@@ -94,5 +94,5 @@ class CalendarApplication : Application() {
     }
 }
 
-fun main(args: Array<String>) = Application.launch(javaClass<CalendarApplication>(), * array())
+fun main(args: Array<String>) = Application.launch(javaClass<CalendarApplication>(), * arrayOf())
 

@@ -35,4 +35,4 @@ class FormApplication : Application() {
     }
 }
 
-fun main(args: Array<String>) = Application.launch(javaClass<FormApplication>(), * array())
+fun main(args: Array<String>) = Application.launch(javaClass<FormApplication>(), * arrayOf())

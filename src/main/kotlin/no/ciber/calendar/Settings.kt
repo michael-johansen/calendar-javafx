@@ -46,4 +46,8 @@ object Settings {
     }
 
     private fun classLoader() = javaClass.getClassLoader()
+
+    fun useMockApi(): Boolean {
+        return true
+    }
 }

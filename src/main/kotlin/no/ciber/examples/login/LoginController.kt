@@ -1,14 +1,13 @@
 package no.ciber.examples.login
 
-import javafx.event.ActionEvent
 import javafx.fxml.FXML
 import javafx.scene.text.Text
 
 class LoginController {
-    [FXML]
+    @FXML
     private var actiontarget: Text? = null
 
-    [FXML]
+    @FXML
     protected fun handleSubmitButtonAction() {
         actiontarget?.setText("Sign in button pressed")
     }

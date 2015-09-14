@@ -13,12 +13,9 @@ import org.slf4j.LoggerFactory
 import java.net.URL
 import java.util.ResourceBundle
 
-/**
- * Created by Michael on 06.05.2015.
- */
 public class LoginController : Initializable {
     private val logger = LoggerFactory.getLogger(javaClass)
-    FXML var loginWebView: WebView? = null
+    @FXML var loginWebView: WebView? = null
     private val loginChangeListener = LoginChangeListener()
     private val credentialsProperty: SimpleObjectProperty<AuthenticatedData?> = SimpleObjectProperty(null)
 

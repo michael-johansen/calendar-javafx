@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.property.SimpleStringProperty
 
-JsonIgnoreProperties(array(
+JsonIgnoreProperties(*arrayOf(
         "idProperty",
         "descriptionProperty",
         "locationProperty",

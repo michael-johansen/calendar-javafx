@@ -9,7 +9,7 @@ import java.math.BigInteger
 import java.security.MessageDigest
 import java.util.Base64
 
-JsonIgnoreProperties(array(
+JsonIgnoreProperties(*arrayOf(
         "selected",
         "idProperty",
         "emailProperty",

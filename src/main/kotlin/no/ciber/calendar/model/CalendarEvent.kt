@@ -11,7 +11,7 @@ import no.ciber.calendar.Settings
 import java.time.*
 import java.util.ArrayList
 
-JsonIgnoreProperties(array(
+JsonIgnoreProperties(*arrayOf(
         "nameProperty",
         "descriptionProperty",
         "idProperty",

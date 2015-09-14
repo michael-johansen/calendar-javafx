@@ -26,5 +26,5 @@ class HelloWorldApplication : Application() {
 }
 
 fun main(args: Array<String>) {
-    Application.launch(javaClass<HelloWorldApplication>(), * array())
+    Application.launch(javaClass<HelloWorldApplication>(), * arrayOf())
 }

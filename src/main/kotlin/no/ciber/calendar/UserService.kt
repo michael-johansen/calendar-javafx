@@ -62,7 +62,7 @@ public object UserService {
     private fun getRefreshToken(): String? {
         val path = System.getProperty("java.io.tmpdir");
         val list = File(path)
-                .listFiles({ file, name -> name.matches("""^calendar-javafx-refresh-\w+\.json$""") })
+                .listFiles({ file, name -> name.matches("""^calendar-javafx-refresh-\w+\.json$""".toRegex()) })
                 .sortBy { it.lastModified() }
                 .reverse()
         list.forEach { logger.info("Refresh token from: ${Instant.ofEpochMilli(it.lastModified())} in file: ${it.name}") }

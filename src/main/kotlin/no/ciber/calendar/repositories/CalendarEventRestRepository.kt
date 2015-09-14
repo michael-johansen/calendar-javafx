@@ -11,8 +11,8 @@ import no.ciber.calendar.model.CalendarEvent
 import no.ciber.calendar.model.SearchMode
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.time.Instant
-import java.time.ZonedDateTime
+import java.time.*
+import java.util.*
 
 /**
  * User: Michael Johansen
@@ -38,12 +38,31 @@ public object CalendarEventRestRepository {
             SearchMode.Upcoming -> request.queryString("intervalStart", Instant.now().toEpochMilli())
         }
 
+        if(Settings.useMockApi()){
+            return listOf(
+                    calendarEvent("1", "Awesome event"),
+                    calendarEvent("2", "BIL Poker"),
+                    calendarEvent("3", "Java fagdag")
+            )
+        }
+
         logRequest(request)
 
         val response = request.asString()
         if (response.getStatus() != 200) throw UnirestException("Not OK!")
         logResponse(response)
         return parseJson(response.getBody())
+    }
+
+    private fun calendarEvent(id: String, name: String): CalendarEvent {
+        val event = CalendarEvent()
+        event.id = id
+        event.createdDate = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)
+        event.startDate = LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC)
+        event.endDate = LocalDateTime.now().plusHours(2).toEpochSecond(ZoneOffset.UTC)
+        event.description = "Be there or be square"
+        event.name = name
+        return event
     }
 
     public fun save(event: CalendarEvent) {

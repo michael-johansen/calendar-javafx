@@ -37,7 +37,7 @@ public class SelectableImageListCell<T>(
             image.setImage(Image(url.invoke(item).getValue()))
             label.textProperty().bind(text.invoke(item))
             group.getChildren().clear()
-            group.getChildren().addAll(array(checkbox, label, createFillPane(), image))
+            group.getChildren().addAll(arrayOf(checkbox, label, createFillPane(), image))
             this.setGraphic(group);
         }
     }
